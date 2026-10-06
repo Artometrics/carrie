@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PageMatch — Book Quiz & Personalized Recommendations</title>
+  <meta name="description" content="Discover your next favorite read with Carrie's personalized book quiz. Tailored book recommendations based on your mood, tropes, and reading goals.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body class="bg-parchment text-charcoal">
+  <!-- Top Navigation -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-logo" id="navLogo">
+        <span class="logo-icon">📖</span>
+        <div class="logo-text">
+          <span class="brand-title">PageMatch</span>
+          <span class="brand-subtitle">by Carrie</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <button id="navQuizBtn" class="nav-btn active">Take Quiz</button>
+        <button id="navBrowseBtn" class="nav-btn">Browse Library</button>
+        <button id="navSavedBtn" class="nav-btn">
+          Reading List <span id="savedCountBadge" class="badge">0</span>
+        </button>
+        <a href="https://carrie-pets.web.app" target="_blank" class="nav-link-secondary" title="Visit Carrie's Pet Certificate Generator">
+          🐾 Pet Certificates &rarr;
+        </a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="affiliateSettingsBtn" class="icon-btn" title="Amazon Affiliate Settings" aria-label="Amazon Affiliate Settings">
+          <span>⚙️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero / Introduction -->
+  <section id="heroSection" class="hero-section">
+    <div class="hero-content">
+      <span class="hero-tag">✨ Personalized Literary Matchmaker</span>
+      <h1 class="hero-title">Find the Book You Won't Want to Put Down</h1>
+      <p class="hero-desc">
+        Tired of endless scrolling on Goodreads? Answer 5 quick questions about your current mood, favorite story tropes, and ideal pacing to get tailored book recommendations you'll love.
+      </p>
+      <div class="hero-buttons">
+        <button id="startQuizBtn" class="btn btn-primary btn-lg">
+          <span>Start Book Quiz</span>
+          <span class="btn-arrow">&rarr;</span>
+        </button>
+        <button id="randomSurpriseBtn" class="btn btn-outline btn-lg">
+          <span>🎲 Surprise Me</span>
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <strong>35+</strong>
+          <span>Curated Bestsellers</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <strong>98%</strong>
+          <span>Match Precision</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <strong>Amazon Ready</strong>
+          <span>Affiliate Enabled</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="main-container">
+
+    <!-- 1. QUIZ SECTION -->
+    <section id="quizSection" class="view-section hidden">
+      <div class="quiz-card">
+        <div class="quiz-progress-bar-container">
+          <div id="quizProgressBar" class="quiz-progress-bar" style="width: 20%;"></div>
+        </div>
+        <div class="quiz-header">
+          <div class="quiz-step-info">
+            <span id="quizStepText">Question 1 of 5</span>
+            <span id="quizCategoryBadge" class="quiz-category">Vibe & Mood</span>
+          </div>
+          <button id="quizRestartBtn" class="btn-text">Restart Quiz</button>
+        </div>
+
+        <div id="quizQuestionContainer" class="quiz-body">
+          <h2 id="quizQuestionTitle" class="quiz-question-title">What kind of reading mood are you in?</h2>
+          <p id="quizQuestionSubtitle" class="quiz-question-sub">Select the emotional atmosphere that matches your state of mind.</p>
+          
+          <div id="quizOptionsGrid" class="quiz-options-grid">
+            <!-- Dynamic options injected here -->
+          </div>
+        </div>
+
+        <div class="quiz-footer">
+          <button id="quizPrevBtn" class="btn btn-secondary" disabled>&larr; Back</button>
+          <button id="quizNextBtn" class="btn btn-primary" disabled>Next &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. RESULTS SECTION -->
+    <section id="resultsSection" class="view-section hidden">
+      <div class="results-header">
+        <div class="results-banner">
+          <span class="results-tag">🎉 Matching Complete</span>
+          <h2 class="results-title">Your Curated Book Matches</h2>
+          <p id="resultsSummaryText" class="results-summary">
+            Based on your preference for fast-paced mystery and found family tropes, here are the books handpicked for you.
+          </p>
+        </div>
+        <div class="results-actions">
+          <button id="retakeQuizBtn" class="btn btn-secondary">
+            <span>🔄 Retake Quiz</span>
+          </button>
+          <button id="shareResultsBtn" class="btn btn-outline">
+            <span>📋 Share Matches</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="matchCardsGrid" class="book-grid">
+        <!-- Rendered Top Book Matches -->
+      </div>
+    </section>
+
+    <!-- 3. BROWSE ALL BOOKS SECTION -->
+    <section id="browseSection" class="view-section hidden">
+      <div class="browse-header">
+        <div>
+          <h2 class="section-title">Explore Carrie's Curated Library</h2>
+          <p class="section-sub">Browse all recommended books, filter by genre, or search by title & author.</p>
+        </div>
+        <div class="search-filter-box">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="librarySearchInput" placeholder="Search title, author, or keyword..." autocomplete="off">
+            <button id="clearSearchBtn" class="clear-btn hidden">&times;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Genre Pills -->
+      <div class="genre-filter-tabs" id="genreFilterTabs">
+        <button class="genre-tab active" data-genre="all">All Books</button>
+        <button class="genre-tab" data-genre="Sci-Fi & Fantasy">Sci-Fi & Fantasy</button>
+        <button class="genre-tab" data-genre="Mystery & Thriller">Mystery & Thriller</button>
+        <button class="genre-tab" data-genre="Literary Fiction">Literary Fiction</button>
+        <button class="genre-tab" data-genre="Romance & Romantasy">Romance</button>
+        <button class="genre-tab" data-genre="Non-Fiction & Memoir">Non-Fiction</button>
+      </div>
+
+      <div id="browseCardsGrid" class="book-grid">
+        <!-- Rendered Browse Books -->
+      </div>
+    </section>
+
+    <!-- 4. SAVED / READING LIST SECTION -->
+    <section id="savedSection" class="view-section hidden">
+      <div class="saved-header">
+        <div>
+          <h2 class="section-title">Your Saved Reading Shelf</h2>
+          <p class="section-sub">Books you've bookmarked to read next or buy on Amazon.</p>
+        </div>
+        <button id="clearSavedBtn" class="btn btn-outline btn-sm">Clear List</button>
+      </div>
+      <div id="savedCardsGrid" class="book-grid">
+        <!-- Saved books list -->
+      </div>
+      <div id="emptySavedState" class="empty-state hidden">
+        <span class="empty-icon">📚</span>
+        <h3>Your reading shelf is empty</h3>
+        <p>Take the quiz or browse the library to save books you're excited to read!</p>
+        <button class="btn btn-primary" onclick="window.showQuiz()">Take the Quiz</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Amazon Affiliate Settings Modal -->
+  <div id="affiliateModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Amazon Affiliate Configuration</h3>
+        <button id="closeModalBtn" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-info">
+          Carrie can plug in her official <strong>Amazon Associate Tracking ID</strong> here. All "Buy on Amazon" buttons will automatically append this affiliate tag to earn referral commissions.
+        </p>
+        <div class="form-group">
+          <label for="affiliateTagInput">Amazon Associate Tag</label>
+          <input type="text" id="affiliateTagInput" placeholder="e.g., carrie-20" value="carrie-20">
+          <span class="form-hint">Default: <code>carrie-20</code>. When Carrie's account is approved, update it here.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveAffiliateTagBtn" class="btn btn-primary">Save Affiliate Tag</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast hidden"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <span class="logo-icon">📖</span>
+          <span class="brand-title">PageMatch</span>
+        </div>
+        <p class="footer-desc">Curated book quiz & recommendations crafted for avid readers.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Other Projects by Carrie</h4>
+        <ul class="footer-links">
+          <li><a href="https://carrie-pets.web.app" target="_blank">🐾 PawCert — Pet Certificate Generator</a></li>
+          <li><a href="https://carrie-510519.web.app" target="_blank">🌐 Carrie's Studio Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Affiliate Disclosure</h4>
+        <p class="footer-disclosure">
+          As an Amazon Associate, Carrie earns from qualifying purchases. Clicking links and purchasing books supports independent curation at no additional cost to you.
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Carrie &bull; Artometrics Web Suite &bull; All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
