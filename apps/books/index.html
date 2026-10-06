@@ -3,248 +3,367 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PageMatch — Book Quiz & Personalized Recommendations</title>
-  <meta name="description" content="Discover your next favorite read with Carrie's personalized book quiz. Tailored book recommendations based on your mood, tropes, and reading goals.">
+  <title>PageMatch & The Literary Tarot — Book Oracle & Recommendation Studio</title>
+  <meta name="description" content="Discover your next great read through the mystical 3-card Literary Tarot, interactive book matching quizzes, free Project Gutenberg public domain ebooks, and CliffNotes study capsules.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔮</text></svg>">
 </head>
-<body class="bg-parchment text-charcoal">
-  <!-- Top Navigation -->
-  <header class="site-header">
+<body class="theme-midnight">
+
+  <!-- Header & Navigation -->
+  <header class="app-header">
     <div class="header-container">
-      <a href="#" class="brand-logo" id="navLogo">
-        <span class="logo-icon">📖</span>
-        <div class="logo-text">
-          <span class="brand-title">PageMatch</span>
-          <span class="brand-subtitle">by Carrie</span>
+      <a href="#" class="brand-link">
+        <span class="brand-icon">🔮</span>
+        <div>
+          <span class="brand-title">The Literary Tarot</span>
+          <span class="brand-sub">PageMatch &bull; by Carrie</span>
         </div>
       </a>
-      <nav class="nav-links">
-        <button id="navQuizBtn" class="nav-btn active">Take Quiz</button>
-        <button id="navBrowseBtn" class="nav-btn">Browse Library</button>
-        <button id="navSavedBtn" class="nav-btn">
-          Reading List <span id="savedCountBadge" class="badge">0</span>
+
+      <!-- Primary Mode Switcher -->
+      <nav class="mode-nav">
+        <button class="nav-tab active" data-tab="tarot">
+          <span>🔮 Tarot Oracle</span>
         </button>
-        <a href="https://carrie-pets.web.app" target="_blank" class="nav-link-secondary" title="Visit Carrie's Pet Certificate Generator">
-          🐾 Pet Certificates &rarr;
-        </a>
+        <button class="nav-tab" data-tab="quiz">
+          <span>📋 Reading Quiz</span>
+        </button>
+        <button class="nav-tab" data-tab="gutenberg">
+          <span>🏛️ Gutenberg Classics</span>
+        </button>
+        <button class="nav-tab" data-tab="library">
+          <span>📚 Modern Catalog</span>
+        </button>
       </nav>
+
       <div class="header-actions">
-        <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
-          <span class="theme-icon">🌙</span>
+        <button id="shelfDrawerBtn" class="action-btn" title="View Saved Reading Shelf">
+          <span>❤️ Shelf</span>
+          <span id="shelfBadge" class="badge">0</span>
         </button>
-        <button id="affiliateSettingsBtn" class="icon-btn" title="Amazon Affiliate Settings" aria-label="Amazon Affiliate Settings">
+        <button id="affiliateConfigBtn" class="action-btn icon-only" title="Amazon Affiliate Settings">
           <span>⚙️</span>
         </button>
+        <a href="https://carrie-pets.web.app" target="_blank" class="nav-pet-link" title="Open PawCert Pet Certificate Studio">
+          🐾 Pet Certs &rarr;
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero / Introduction -->
-  <section id="heroSection" class="hero-section">
-    <div class="hero-content">
-      <span class="hero-tag">✨ Personalized Literary Matchmaker</span>
-      <h1 class="hero-title">Find the Book You Won't Want to Put Down</h1>
-      <p class="hero-desc">
-        Tired of endless scrolling on Goodreads? Answer 5 quick questions about your current mood, favorite story tropes, and ideal pacing to get tailored book recommendations you'll love.
+  <!-- ========================================================
+       SECTION 1: THE LITERARY TAROT (BIBLIOMANCY ORACLE)
+       ======================================================== -->
+  <section id="tarotSection" class="content-view active">
+    <div class="oracle-hero">
+      <span class="oracle-eyebrow">✦ BIBLIOMANCY DIVINATION ✦</span>
+      <h1 class="oracle-title">Consult The Literary Tarot</h1>
+      <p class="oracle-subtitle">
+        Draw three sacred cards from the literary arcana to divine your spirit archetype, unveil your unwritten quest, and unlock your fated book.
       </p>
-      <div class="hero-buttons">
-        <button id="startQuizBtn" class="btn btn-primary btn-lg">
-          <span>Start Book Quiz</span>
-          <span class="btn-arrow">&rarr;</span>
+      
+      <div class="oracle-controls">
+        <button id="shuffleDrawBtn" class="btn btn-oracle">
+          <span>✨ Shuffle & Draw 3 Cards</span>
         </button>
-        <button id="randomSurpriseBtn" class="btn btn-outline btn-lg">
-          <span>🎲 Surprise Me</span>
+        <button id="resetOracleBtn" class="btn btn-ghost hidden">
+          <span>↺ Draw Anew</span>
         </button>
       </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <strong>35+</strong>
-          <span>Curated Bestsellers</span>
+    </div>
+
+    <!-- The 3-Card Tarot Spread -->
+    <div class="tarot-spread-container">
+      
+      <!-- Card 1: The Querent -->
+      <div class="tarot-card-slot" id="slot1">
+        <div class="slot-label">CARD I &bull; THE QUERENT</div>
+        <div class="slot-role">Your Inner Reader Archetype</div>
+        <div class="tarot-card-3d" id="tarotCard1">
+          <div class="card-inner">
+            <!-- Back -->
+            <div class="card-face card-back">
+              <div class="celestial-pattern"></div>
+              <div class="card-back-ornament">✦ ✧ ✦</div>
+              <span class="back-instruction">Tap to Reveal</span>
+            </div>
+            <!-- Front -->
+            <div class="card-face card-front" id="cardFront1">
+              <div class="card-tarot-numeral">I</div>
+              <div class="card-tarot-symbol" id="card1Symbol">🔮</div>
+              <h3 class="card-tarot-name" id="card1Name">The Alchemist</h3>
+              <span class="card-tarot-tagline" id="card1Tagline">Seeker of Deep Transformation</span>
+              <p class="card-tarot-meaning" id="card1Meaning">
+                You crave narratives that alter how you see reality. You hunger for intellect, layered secrets, and profound personal growth.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <strong>98%</strong>
-          <span>Match Precision</span>
+      </div>
+
+      <!-- Card 2: The Crucible -->
+      <div class="tarot-card-slot" id="slot2">
+        <div class="slot-label">CARD II &bull; THE CRUCIBLE</div>
+        <div class="slot-role">Your Unwritten Conflict & Quest</div>
+        <div class="tarot-card-3d" id="tarotCard2">
+          <div class="card-inner">
+            <!-- Back -->
+            <div class="card-face card-back">
+              <div class="celestial-pattern"></div>
+              <div class="card-back-ornament">✦ ✧ ✦</div>
+              <span class="back-instruction">Tap to Reveal</span>
+            </div>
+            <!-- Front -->
+            <div class="card-face card-front" id="cardFront2">
+              <div class="card-tarot-numeral">II</div>
+              <div class="card-tarot-symbol" id="card2Symbol">🗝️</div>
+              <h3 class="card-tarot-name" id="card2Name">The Forbidden Labyrinth</h3>
+              <span class="card-tarot-tagline" id="card2Tagline">Unraveling Twisted Enigmas</span>
+              <p class="card-tarot-meaning" id="card2Meaning">
+                The cards demand a challenge: high-stakes tension, clever deceptions, and twists that leave you breathless until the final page.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <strong>Amazon Ready</strong>
-          <span>Affiliate Enabled</span>
+      </div>
+
+      <!-- Card 3: The Grimoire (Destiny Book) -->
+      <div class="tarot-card-slot" id="slot3">
+        <div class="slot-label">CARD III &bull; THE GRIMOIRE</div>
+        <div class="slot-role">Your Fated Tome of Destiny</div>
+        <div class="tarot-card-3d" id="tarotCard3">
+          <div class="card-inner">
+            <!-- Back -->
+            <div class="card-face card-back">
+              <div class="celestial-pattern"></div>
+              <div class="card-back-ornament">✦ ✧ ✦</div>
+              <span class="back-instruction">Tap to Reveal</span>
+            </div>
+            <!-- Front -->
+            <div class="card-face card-front card-book-reveal" id="cardFront3">
+              <div class="card-tarot-numeral">III</div>
+              <div class="book-cover-frame">
+                <img id="card3CoverImg" src="" alt="Fated Book Cover" class="fated-cover">
+              </div>
+              <h3 class="card-tarot-name" id="card3BookTitle">Piranesi</h3>
+              <span class="card-tarot-author" id="card3BookAuthor">by Susanna Clarke</span>
+              <p class="card-tarot-destiny" id="card3DestinyText">
+                "The House is kind and infinite. A surreal labyrinth of tides, statues, and solitude that echoes your soul."
+              </p>
+              <div class="fated-card-actions">
+                <button class="btn btn-sm btn-capsule" id="fatedCapsuleBtn">📑 CliffNotes Study Capsule</button>
+                <a href="#" target="_blank" class="btn btn-sm btn-amazon" id="fatedAmazonBtn">🛒 Buy on Amazon</a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+    </div>
+
+    <!-- Divination Narrative Synthesis Banner -->
+    <div id="divinationSynthesis" class="divination-synthesis hidden">
+      <div class="synthesis-card">
+        <span class="synthesis-badge">✦ THE ORACLE’S DECREE ✦</span>
+        <h2 id="synthesisTitle">A Journey Through Mind & Mystery</h2>
+        <p id="synthesisText" class="synthesis-text"></p>
       </div>
     </div>
   </section>
 
-  <!-- Main Content Area -->
-  <main class="main-container">
+  <!-- ========================================================
+       SECTION 2: CLASSIC 5-QUESTION QUIZ
+       ======================================================== -->
+  <section id="quizSection" class="content-view hidden">
+    <div class="quiz-wrapper">
+      <div class="quiz-progress-bar">
+        <div id="progressBarFill" class="progress-fill" style="width: 20%;"></div>
+      </div>
+      <div class="quiz-step-indicator" id="quizStepIndicator">Question 1 of 5</div>
 
-    <!-- 1. QUIZ SECTION -->
-    <section id="quizSection" class="view-section hidden">
-      <div class="quiz-card">
-        <div class="quiz-progress-bar-container">
-          <div id="quizProgressBar" class="quiz-progress-bar" style="width: 20%;"></div>
-        </div>
-        <div class="quiz-header">
-          <div class="quiz-step-info">
-            <span id="quizStepText">Question 1 of 5</span>
-            <span id="quizCategoryBadge" class="quiz-category">Vibe & Mood</span>
-          </div>
-          <button id="quizRestartBtn" class="btn-text">Restart Quiz</button>
-        </div>
-
-        <div id="quizQuestionContainer" class="quiz-body">
-          <h2 id="quizQuestionTitle" class="quiz-question-title">What kind of reading mood are you in?</h2>
-          <p id="quizQuestionSubtitle" class="quiz-question-sub">Select the emotional atmosphere that matches your state of mind.</p>
-          
-          <div id="quizOptionsGrid" class="quiz-options-grid">
-            <!-- Dynamic options injected here -->
-          </div>
-        </div>
-
-        <div class="quiz-footer">
-          <button id="quizPrevBtn" class="btn btn-secondary" disabled>&larr; Back</button>
-          <button id="quizNextBtn" class="btn btn-primary" disabled>Next &rarr;</button>
+      <!-- Question Container -->
+      <div id="quizQuestionCard" class="quiz-card">
+        <h2 id="questionPrompt" class="question-title">What vibe are you craving right now?</h2>
+        <p id="questionSubtitle" class="question-sub">Choose the atmosphere that resonates with your current mood.</p>
+        <div id="optionsGrid" class="options-grid">
+          <!-- Dynamic Options Injected Here -->
         </div>
       </div>
-    </section>
 
-    <!-- 2. RESULTS SECTION -->
-    <section id="resultsSection" class="view-section hidden">
+      <!-- Quiz Navigation Buttons -->
+      <div class="quiz-nav-row">
+        <button id="prevQuestionBtn" class="btn btn-outline" disabled>&larr; Back</button>
+        <button id="nextQuestionBtn" class="btn btn-primary" disabled>Next Question &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Quiz Results Grid -->
+    <div id="quizResultsContainer" class="results-container hidden">
       <div class="results-header">
-        <div class="results-banner">
-          <span class="results-tag">🎉 Matching Complete</span>
-          <h2 class="results-title">Your Curated Book Matches</h2>
-          <p id="resultsSummaryText" class="results-summary">
-            Based on your preference for fast-paced mystery and found family tropes, here are the books handpicked for you.
-          </p>
-        </div>
-        <div class="results-actions">
-          <button id="retakeQuizBtn" class="btn btn-secondary">
-            <span>🔄 Retake Quiz</span>
-          </button>
-          <button id="shareResultsBtn" class="btn btn-outline">
-            <span>📋 Share Matches</span>
-          </button>
-        </div>
+        <span class="pill-tag">✨ Quiz Completed</span>
+        <h2>Your Top Literary Matches</h2>
+        <p id="matchSummaryText">Based on your mood, pacing, and favorite tropes, we scored our curated catalog to find your next obsession.</p>
+        <button id="retakeQuizBtn" class="btn btn-outline btn-sm">↺ Retake Quiz</button>
       </div>
 
-      <div id="matchCardsGrid" class="book-grid">
-        <!-- Rendered Top Book Matches -->
+      <div id="quizResultsGrid" class="books-grid">
+        <!-- Results injected here -->
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 3. BROWSE ALL BOOKS SECTION -->
-    <section id="browseSection" class="view-section hidden">
-      <div class="browse-header">
-        <div>
-          <h2 class="section-title">Explore Carrie's Curated Library</h2>
-          <p class="section-sub">Browse all recommended books, filter by genre, or search by title & author.</p>
+  <!-- ========================================================
+       SECTION 3: PROJECT GUTENBERG CLASSICS VAULT
+       ======================================================== -->
+  <section id="gutenbergSection" class="content-view hidden">
+    <div class="gutenberg-hero">
+      <span class="gutenberg-pill">🏛️ The Public Domain Treasury</span>
+      <h1 class="gutenberg-title">Project Gutenberg Press Vault</h1>
+      <p class="gutenberg-sub">
+        Scan, explore, and read 70,000+ timeless public-domain classic eBooks entirely free in your browser or download EPUB formats. Powered by the Gutendex Open API.
+      </p>
+
+      <div class="gutenberg-search-box">
+        <input type="text" id="gutenbergSearchInput" placeholder="Search classics (e.g. Frankenstein, Dracula, Jane Austen, Sherlock Holmes)..." class="gutenberg-input">
+        <button id="gutenbergSearchBtn" class="btn btn-primary">🔍 Search Gutenberg</button>
+      </div>
+    </div>
+
+    <!-- Curated Classics Shelf -->
+    <div class="gutenberg-shelf-wrapper">
+      <div class="section-title-row">
+        <h3>Featured Free Classics & Ebooks</h3>
+        <span class="free-badge">100% Free &bull; Public Domain</span>
+      </div>
+
+      <div id="gutenbergGrid" class="gutenberg-grid">
+        <div class="loading-spinner">Searching Gutenberg archives...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 4: FULL MODERN BESTSELLER LIBRARY
+       ======================================================== -->
+  <section id="librarySection" class="content-view hidden">
+    <div class="library-header">
+      <div class="search-filter-row">
+        <div class="search-wrapper">
+          <input type="text" id="librarySearchInput" class="search-input" placeholder="Search modern bestsellers by title, author, trope, or keyword...">
         </div>
-        <div class="search-filter-box">
-          <div class="search-input-wrapper">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="librarySearchInput" placeholder="Search title, author, or keyword..." autocomplete="off">
-            <button id="clearSearchBtn" class="clear-btn hidden">&times;</button>
+        <div class="genre-filter-wrapper">
+          <select id="genreFilterSelect" class="filter-select">
+            <option value="all">All Genres</option>
+            <option value="fantasy">Sci-Fi & Fantasy</option>
+            <option value="thriller">Mystery & Thriller</option>
+            <option value="literary">Literary Fiction</option>
+            <option value="romance">Romance & Romantasy</option>
+            <option value="nonfiction">Non-Fiction & Memoir</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="allBooksGrid" class="books-grid">
+      <!-- Injected via main.js -->
+    </div>
+  </section>
+
+  <!-- ========================================================
+       MODAL 1: CLIFFNOTES & QUIZLET STUDY CAPSULE
+       ======================================================== -->
+  <div id="capsuleModal" class="modal-backdrop hidden">
+    <div class="modal-card capsule-card">
+      <div class="modal-header">
+        <div class="capsule-branding">
+          <span class="capsule-logo">📑</span>
+          <div>
+            <h3>Literary Study Capsule</h3>
+            <span class="capsule-sub">CliffNotes &bull; Key Themes &bull; Study Takeaways</span>
           </div>
         </div>
+        <button id="closeCapsuleBtn" class="btn-close">&times;</button>
       </div>
 
-      <!-- Genre Pills -->
-      <div class="genre-filter-tabs" id="genreFilterTabs">
-        <button class="genre-tab active" data-genre="all">All Books</button>
-        <button class="genre-tab" data-genre="Sci-Fi & Fantasy">Sci-Fi & Fantasy</button>
-        <button class="genre-tab" data-genre="Mystery & Thriller">Mystery & Thriller</button>
-        <button class="genre-tab" data-genre="Literary Fiction">Literary Fiction</button>
-        <button class="genre-tab" data-genre="Romance & Romantasy">Romance</button>
-        <button class="genre-tab" data-genre="Non-Fiction & Memoir">Non-Fiction</button>
-      </div>
-
-      <div id="browseCardsGrid" class="book-grid">
-        <!-- Rendered Browse Books -->
-      </div>
-    </section>
-
-    <!-- 4. SAVED / READING LIST SECTION -->
-    <section id="savedSection" class="view-section hidden">
-      <div class="saved-header">
-        <div>
-          <h2 class="section-title">Your Saved Reading Shelf</h2>
-          <p class="section-sub">Books you've bookmarked to read next or buy on Amazon.</p>
-        </div>
-        <button id="clearSavedBtn" class="btn btn-outline btn-sm">Clear List</button>
-      </div>
-      <div id="savedCardsGrid" class="book-grid">
-        <!-- Saved books list -->
-      </div>
-      <div id="emptySavedState" class="empty-state hidden">
-        <span class="empty-icon">📚</span>
-        <h3>Your reading shelf is empty</h3>
-        <p>Take the quiz or browse the library to save books you're excited to read!</p>
-        <button class="btn btn-primary" onclick="window.showQuiz()">Take the Quiz</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Amazon Affiliate Settings Modal -->
-  <div id="affiliateModal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Amazon Affiliate Configuration</h3>
-        <button id="closeModalBtn" class="modal-close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-info">
-          Carrie can plug in her official <strong>Amazon Associate Tracking ID</strong> here. All "Buy on Amazon" buttons will automatically append this affiliate tag to earn referral commissions.
-        </p>
-        <div class="form-group">
-          <label for="affiliateTagInput">Amazon Associate Tag</label>
-          <input type="text" id="affiliateTagInput" placeholder="e.g., carrie-20" value="carrie-20">
-          <span class="form-hint">Default: <code>carrie-20</code>. When Carrie's account is approved, update it here.</span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="saveAffiliateTagBtn" class="btn btn-primary">Save Affiliate Tag</button>
+      <div class="capsule-body" id="capsuleContent">
+        <!-- Injected via JavaScript -->
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="toastNotification" class="toast hidden"></div>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-col">
-        <div class="footer-brand">
-          <span class="logo-icon">📖</span>
-          <span class="brand-title">PageMatch</span>
+  <!-- ========================================================
+       MODAL 2: IN-BROWSER GUTENBERG EBOOK READER
+       ======================================================== -->
+  <div id="readerModal" class="modal-backdrop hidden">
+    <div class="modal-card reader-card">
+      <div class="reader-header">
+        <div>
+          <h3 id="readerBookTitle">Reading Classic</h3>
+          <span id="readerBookAuthor" class="reader-author">Project Gutenberg Edition</span>
         </div>
-        <p class="footer-desc">Curated book quiz & recommendations crafted for avid readers.</p>
+        <div class="reader-controls">
+          <button id="readerFontDecBtn" class="btn-tool" title="Decrease font size">A-</button>
+          <button id="readerFontIncBtn" class="btn-tool" title="Increase font size">A+</button>
+          <button id="readerThemeToggleBtn" class="btn-tool" title="Toggle Sepia / Night mode">🎨</button>
+          <button id="closeReaderBtn" class="btn-close">&times;</button>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4>Other Projects by Carrie</h4>
-        <ul class="footer-links">
-          <li><a href="https://carrie-pets.web.app" target="_blank">🐾 PawCert — Pet Certificate Generator</a></li>
-          <li><a href="https://carrie-510519.web.app" target="_blank">🌐 Carrie's Studio Portal</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Affiliate Disclosure</h4>
-        <p class="footer-disclosure">
-          As an Amazon Associate, Carrie earns from qualifying purchases. Clicking links and purchasing books supports independent curation at no additional cost to you.
-        </p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Carrie &bull; Artometrics Web Suite &bull; All Rights Reserved.</p>
-    </div>
-  </footer>
 
+      <div class="reader-viewport" id="readerViewport">
+        <div class="reader-loading">Opening Gutenberg text stream...</div>
+      </div>
+
+      <div class="reader-footer">
+        <span class="reader-source-tag">Source: Project Gutenberg (Public Domain)</span>
+        <a href="#" target="_blank" id="readerDownloadEpubLink" class="btn btn-outline btn-sm">📥 Download EPUB</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       DRAWER: READING SHELF
+       ======================================================== -->
+  <div id="shelfDrawer" class="shelf-drawer hidden">
+    <div class="shelf-drawer-inner">
+      <div class="shelf-header">
+        <h3>❤️ Your Reading Shelf</h3>
+        <button id="closeShelfBtn" class="btn-close">&times;</button>
+      </div>
+      <p class="shelf-desc">Books you've saved to read later. Persisted in your browser.</p>
+      
+      <div id="shelfItemsList" class="shelf-items">
+        <div class="empty-shelf">Your shelf is empty! Save books by clicking the heart button on any book card.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 3: AMAZON AFFILIATE SETTINGS
+       ======================================================== -->
+  <div id="affiliateModal" class="modal-backdrop hidden">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Amazon Affiliate Tag</h3>
+        <button id="closeAffiliateBtn" class="btn-close">&times;</button>
+      </div>
+      <p class="modal-desc">
+        Carrie's Amazon Associate tracking tag is applied to all purchase buttons. You can customize or verify the active tag below:
+      </p>
+      <div class="form-group">
+        <label for="affiliateTagInput">Amazon Associate Tag</label>
+        <input type="text" id="affiliateTagInput" class="form-input" value="carrie-20">
+      </div>
+      <div class="modal-footer">
+        <button id="saveAffiliateBtn" class="btn btn-primary">Save Tag</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
   <script type="module" src="./main.js"></script>
 </body>
 </html>

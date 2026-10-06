@@ -57,7 +57,59 @@ const SEAL_ICONS = {
   'heart-shield': '❤️'
 };
 
-// Preset Pets
+// Curated Royalty-Free Stock Pet Photos (Unsplash optimized CDNs)
+const STOCK_PETS = [
+  {
+    name: 'Golden Puppy',
+    species: 'Dog',
+    breed: 'Golden Retriever',
+    url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'Calico Kitten',
+    species: 'Cat',
+    breed: 'Calico Cat',
+    url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'French Bulldog',
+    species: 'Dog',
+    breed: 'French Bulldog',
+    url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'British Shorthair',
+    species: 'Cat',
+    breed: 'British Shorthair',
+    url: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'Fluffy Bunny',
+    species: 'Bunny',
+    breed: 'Holland Lop Rabbit',
+    url: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'Happy Beagle',
+    species: 'Dog',
+    breed: 'Beagle',
+    url: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'Australian Shepherd',
+    species: 'Dog',
+    breed: 'Aussie Mix',
+    url: 'https://images.unsplash.com/photo-1503256207526-0d5d80fa2f47?auto=format&fit=crop&w=400&q=80'
+  },
+  {
+    name: 'Cockatiel Bird',
+    species: 'Bird',
+    breed: 'Cockatiel',
+    url: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=400&q=80'
+  }
+];
+
+// Presets
 const PRESETS = {
   dog: {
     type: 'birth',
@@ -70,7 +122,8 @@ const PRESETS = {
     guardians: 'Carrie & Family',
     location: 'San Francisco, California',
     vow: 'Bound by endless love, unconditional cuddles, treat privileges, and eternal happiness.',
-    seal: 'gold-paw'
+    seal: 'gold-paw',
+    photoUrl: STOCK_PETS[0].url
   },
   cat: {
     type: 'gotcha',
@@ -83,7 +136,8 @@ const PRESETS = {
     guardians: 'Carrie & Kyle',
     location: 'Portland, Oregon',
     vow: 'Promised lifelong sunbeam napping rights, gourmet salmon feasts, and endless affection.',
-    seal: 'heart-shield'
+    seal: 'heart-shield',
+    photoUrl: STOCK_PETS[1].url
   },
   birthday: {
     type: 'birthday',
@@ -96,7 +150,8 @@ const PRESETS = {
     guardians: 'Carrie, Maya & Crew',
     location: 'Austin, Texas',
     vow: 'Happy 5th Birthday to the loudest snorer and sweetest boy in the universe!',
-    seal: 'star-ribbon'
+    seal: 'star-ribbon',
+    photoUrl: STOCK_PETS[2].url
   },
   goodboy: {
     type: 'goodboy',
@@ -109,7 +164,8 @@ const PRESETS = {
     guardians: 'The McAuliffe Family',
     location: 'Boston, Massachusetts',
     vow: 'Certified 100% Good Boy. Absolute master of howling and neighborhood sniffing adventures.',
-    seal: 'royal-crest'
+    seal: 'royal-crest',
+    photoUrl: STOCK_PETS[5].url
   }
 };
 
@@ -124,6 +180,7 @@ const dateLabel = document.getElementById('dateLabel');
 const petGenderSelect = document.getElementById('petGenderSelect');
 const photoUploadInput = document.getElementById('photoUploadInput');
 const uploadTriggerBtn = document.getElementById('uploadTriggerBtn');
+const quickGalleryBtn = document.getElementById('quickGalleryBtn');
 const removePhotoBtn = document.getElementById('removePhotoBtn');
 const guardianInput = document.getElementById('guardianInput');
 const locationInput = document.getElementById('locationInput');
@@ -134,6 +191,17 @@ const sealTypeSelect = document.getElementById('sealTypeSelect');
 
 const presetsBtn = document.getElementById('presetsBtn');
 const presetsMenu = document.getElementById('presetsMenu');
+const galleryBtn = document.getElementById('galleryBtn');
+const galleryModal = document.getElementById('galleryModal');
+const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+const stockGalleryGrid = document.getElementById('stockGalleryGrid');
+
+const certViewport = document.getElementById('certViewport');
+const certificateScaleWrapper = document.getElementById('certificateScaleWrapper');
+const zoomLevelTag = document.getElementById('zoomLevelTag');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const zoomResetBtn = document.getElementById('zoomResetBtn');
 
 const printBtn = document.getElementById('printBtn');
 const downloadBtn = document.getElementById('downloadBtn');
@@ -159,17 +227,82 @@ const certPetSig = document.getElementById('certPetSig');
 const sealEmblemIcon = document.getElementById('sealEmblemIcon');
 const exportCanvas = document.getElementById('exportCanvas');
 
-let uploadedImageDataUrl = null;
 let currentTheme = 'gold';
+let activePhotoSource = null;
+let currentScale = 1.0;
+let isManualZoom = false;
 
 // --- INITIALIZATION ---
 function init() {
   setupEventListeners();
+  renderStockGallery();
   updateCertificate();
+  setupDynamicAutoFit();
+}
+
+// --- DYNAMIC AUTO-FIT & RESIZE ENGINE ---
+function calculateFitScale() {
+  if (!certViewport || !certificateScaleWrapper) return 1.0;
+  
+  // Available container bounds (leaving comfortable padding)
+  const availableWidth = certViewport.clientWidth - 32;
+  const availableHeight = certViewport.clientHeight - 32;
+
+  // Base certificate size
+  const baseWidth = 960;
+  const baseHeight = 680;
+
+  if (availableWidth <= 0 || availableHeight <= 0) return 1.0;
+
+  // Fit ratio
+  const scaleX = availableWidth / baseWidth;
+  const scaleY = availableHeight / baseHeight;
+  
+  // Choose scale that fits both horizontally and vertically
+  const fitScale = Math.min(scaleX, scaleY);
+
+  // Clamp scale between 0.35 and 1.25
+  return Math.max(0.35, Math.min(fitScale, 1.25));
+}
+
+function applyScale(scale) {
+  currentScale = scale;
+  certificateScaleWrapper.style.transform = `scale(${scale.toFixed(3)})`;
+  zoomLevelTag.textContent = `Scale: ${Math.round(scale * 100)}%`;
+}
+
+function setupDynamicAutoFit() {
+  // Initial scale
+  applyScale(calculateFitScale());
+
+  // Debounced resize handler
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (isManualZoom) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      applyScale(calculateFitScale());
+    }, 50);
+  });
+
+  // Zoom Toolbar Buttons
+  zoomResetBtn.addEventListener('click', () => {
+    isManualZoom = false;
+    applyScale(calculateFitScale());
+  });
+
+  zoomInBtn.addEventListener('click', () => {
+    isManualZoom = true;
+    applyScale(Math.min(currentScale + 0.1, 1.5));
+  });
+
+  zoomOutBtn.addEventListener('click', () => {
+    isManualZoom = true;
+    applyScale(Math.max(currentScale - 0.1, 0.35));
+  });
 }
 
 function setupEventListeners() {
-  // Real-time input updates
   [petNameInput, petBreedInput, eventDateInput, guardianInput, locationInput, certNumberInput, vowInput].forEach(el => {
     el.addEventListener('input', updateCertificate);
   });
@@ -188,9 +321,15 @@ function setupEventListeners() {
     });
   });
 
-  // Photo upload
+  // Photo uploads & gallery
   uploadTriggerBtn.addEventListener('click', () => photoUploadInput.click());
   photoUploadInput.addEventListener('change', handlePhotoUpload);
+  quickGalleryBtn.addEventListener('click', () => openGalleryModal());
+  galleryBtn.addEventListener('click', () => openGalleryModal());
+  closeGalleryBtn.addEventListener('click', () => closeGalleryModal());
+  galleryModal.addEventListener('click', (e) => {
+    if (e.target === galleryModal) closeGalleryModal();
+  });
   removePhotoBtn.addEventListener('click', removePhoto);
 
   // Cert Number generator
@@ -219,6 +358,35 @@ function setupEventListeners() {
   downloadBtn.addEventListener('click', exportCertificatePNG);
 }
 
+function renderStockGallery() {
+  stockGalleryGrid.innerHTML = STOCK_PETS.map((pet, idx) => `
+    <div class="stock-item" data-idx="${idx}">
+      <img src="${pet.url}" alt="${pet.name}" class="stock-avatar" loading="lazy">
+      <span class="stock-label">${pet.name}</span>
+    </div>
+  `).join('');
+
+  stockGalleryGrid.querySelectorAll('.stock-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = item.dataset.idx;
+      const pet = STOCK_PETS[idx];
+      setPetPhoto(pet.url);
+      petSpeciesSelect.value = pet.species;
+      petBreedInput.value = pet.breed;
+      closeGalleryModal();
+      updateCertificate();
+    });
+  });
+}
+
+function openGalleryModal() {
+  galleryModal.classList.remove('hidden');
+}
+
+function closeGalleryModal() {
+  galleryModal.classList.add('hidden');
+}
+
 function handleTypeChange() {
   const typeKey = certTypeSelect.value;
   const config = CERT_TYPES[typeKey] || CERT_TYPES.birth;
@@ -241,23 +409,26 @@ function handlePhotoUpload(e) {
 
   const reader = new FileReader();
   reader.onload = (event) => {
-    uploadedImageDataUrl = event.target.result;
-    certPetPhoto.src = uploadedImageDataUrl;
-    certPetPhoto.classList.remove('hidden');
-    certSpeciesSilhouette.classList.add('hidden');
-    removePhotoBtn.classList.remove('hidden');
-    uploadTriggerBtn.textContent = '📷 Replace Photo';
+    setPetPhoto(event.target.result);
   };
   reader.readAsDataURL(file);
 }
 
+function setPetPhoto(srcUrl) {
+  activePhotoSource = srcUrl;
+  certPetPhoto.crossOrigin = 'anonymous';
+  certPetPhoto.src = srcUrl;
+  certPetPhoto.classList.remove('hidden');
+  certSpeciesSilhouette.classList.add('hidden');
+  removePhotoBtn.classList.remove('hidden');
+}
+
 function removePhoto() {
-  uploadedImageDataUrl = null;
+  activePhotoSource = null;
   certPetPhoto.src = '';
   certPetPhoto.classList.add('hidden');
   certSpeciesSilhouette.classList.remove('hidden');
   removePhotoBtn.classList.add('hidden');
-  uploadTriggerBtn.textContent = '📷 Choose Photo';
   photoUploadInput.value = '';
 }
 
@@ -298,7 +469,7 @@ function updateCertificate() {
 
   // Details
   certDisplayDate.textContent = formatDateString(eventDateInput.value);
-  certDisplayLocation.textContent = locationInput.value.trim() || 'Earth';
+  certDisplayLocation.textContent = locationInput.value.trim() || 'San Francisco, CA';
   const guardians = guardianInput.value.trim() || 'Carrie & Family';
   certDisplayGuardians.textContent = guardians;
 
@@ -335,7 +506,12 @@ function applyPreset(preset) {
   vowInput.value = preset.vow;
   sealTypeSelect.value = preset.seal;
 
-  removePhoto();
+  if (preset.photoUrl) {
+    setPetPhoto(preset.photoUrl);
+  } else {
+    removePhoto();
+  }
+
   updateCertificate();
 
   confetti({
@@ -352,13 +528,12 @@ function exportCertificatePNG() {
   const width = canvas.width;
   const height = canvas.height;
 
-  // Colors based on active theme
   const themeColors = {
     gold: {
-      bg: '#fffdf9',
+      bg: '#fffdfa',
       borderOuter: '#c59741',
       borderInner: '#9f7220',
-      textPrimary: '#2c2518',
+      textPrimary: '#241e14',
       textAccent: '#8c6218',
       seal1: '#fce99f',
       seal2: '#d49f3b',
@@ -402,48 +577,59 @@ function exportCertificatePNG() {
   ctx.fillStyle = colors.bg;
   ctx.fillRect(0, 0, width, height);
 
+  // Guilloche Banknote Arcs (decorative fine lines)
+  ctx.strokeStyle = colors.borderOuter;
+  ctx.lineWidth = 0.5;
+  ctx.globalAlpha = 0.15;
+  for (let r = 200; r < 1400; r += 28) {
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1.0;
+
   // 2. Borders
-  ctx.lineWidth = 12;
+  ctx.lineWidth = 14;
   ctx.strokeStyle = colors.borderOuter;
   ctx.strokeRect(60, 60, width - 120, height - 120);
 
-  ctx.lineWidth = 4;
-  ctx.strokeRect(76, 76, width - 152, height - 152);
+  ctx.lineWidth = 3;
+  ctx.strokeRect(78, 78, width - 156, height - 156);
 
   ctx.lineWidth = 4;
   ctx.strokeStyle = colors.borderInner;
   ctx.strokeRect(100, 100, width - 200, height - 200);
 
-  // Corner Filigrees
-  ctx.font = '54px serif';
+  // Corner Rosettes
+  ctx.font = '56px serif';
   ctx.fillStyle = colors.borderOuter;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('❦', 130, 130);
-  ctx.fillText('❦', width - 130, 130);
-  ctx.fillText('❦', 130, height - 130);
-  ctx.fillText('❦', width - 130, height - 130);
+  ctx.fillText('❦', 132, 132);
+  ctx.fillText('❦', width - 132, 132);
+  ctx.fillText('❦', 132, height - 132);
+  ctx.fillText('❦', width - 132, height - 132);
 
   // 3. Header
   const typeKey = certTypeSelect.value;
   const config = CERT_TYPES[typeKey] || CERT_TYPES.birth;
 
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '600 28px Cinzel, serif';
+  ctx.font = '700 28px Cinzel, serif';
   ctx.textAlign = 'center';
-  ctx.fillText('OFFICIAL COMPANION REGISTRY', width / 2, 170);
+  ctx.fillText('• OFFICIAL COMPANION REGISTRY •', width / 2, 170);
 
-  ctx.font = '700 24px sans-serif';
+  ctx.font = '800 24px sans-serif';
   ctx.textAlign = 'right';
-  ctx.fillText(`NO. ${certNumberInput.value.trim()}`, width - 130, 170);
+  ctx.fillText(`NO. ${certNumberInput.value.trim()}`, width - 140, 170);
 
-  // Main Title
+  // Title
   ctx.fillStyle = colors.textPrimary;
-  ctx.font = '800 68px Cinzel, serif';
+  ctx.font = '900 68px Cinzel, serif';
   ctx.textAlign = 'center';
   ctx.fillText(config.title, width / 2, 260);
 
-  // Decorative Rule
+  // Rule
   ctx.strokeStyle = colors.borderOuter;
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -462,7 +648,7 @@ function exportCertificatePNG() {
   // Preamble
   ctx.fillStyle = colors.textAccent;
   ctx.font = 'italic 34px "Playfair Display", serif';
-  ctx.fillText(config.preamble, width / 2, 380);
+  ctx.fillText(config.preamble, width / 2, 375);
 
   // 4. Pet Name
   const petName = petNameInput.value.trim() || 'Beloved Pet';
@@ -470,15 +656,15 @@ function exportCertificatePNG() {
   ctx.font = 'bold 96px "Playfair Display", serif';
   ctx.fillText(petName, width / 2, 510);
 
-  // Subtitle: Gender & Breed
+  // Subtitle: Title & Breed
   const subText = `${petGenderSelect.value}  •  ${petBreedInput.value.trim() || 'Companion'}`;
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '600 32px Cinzel, serif';
+  ctx.font = '700 32px Cinzel, serif';
   ctx.fillText(subText, width / 2, 580);
 
   // 5. Details Section
   const detailBoxY = 660;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
   ctx.fillRect(180, detailBoxY, width - 360, 260);
   ctx.strokeStyle = colors.borderOuter;
   ctx.lineWidth = 2;
@@ -487,7 +673,7 @@ function exportCertificatePNG() {
   // Labels & Values
   ctx.textAlign = 'left';
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '700 24px Cinzel, serif';
+  ctx.font = '800 24px Cinzel, serif';
   ctx.fillText(config.dateLabel, 230, detailBoxY + 50);
   ctx.fillText('HOMETOWN & LOCATION', width / 2 + 50, detailBoxY + 50);
 
@@ -504,7 +690,7 @@ function exportCertificatePNG() {
   ctx.stroke();
 
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '700 22px Cinzel, serif';
+  ctx.font = '800 22px Cinzel, serif';
   ctx.textAlign = 'center';
   ctx.fillText('OFFICIAL GUARDIAN(S) & PARENTS', width / 2, detailBoxY + 185);
 
@@ -538,7 +724,7 @@ function exportCertificatePNG() {
   ctx.stroke();
 
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '700 20px Cinzel, serif';
+  ctx.font = '800 20px Cinzel, serif';
   ctx.fillText('PROUD GUARDIAN / PARENT', 480, footerY + 55);
 
   // Pet Signature
@@ -555,10 +741,10 @@ function exportCertificatePNG() {
   ctx.stroke();
 
   ctx.fillStyle = colors.textAccent;
-  ctx.font = '700 20px Cinzel, serif';
+  ctx.font = '800 20px Cinzel, serif';
   ctx.fillText('PET SIGNATURE & PAW APPROVAL', width - 480, footerY + 55);
 
-  // Embossed Seal in Center
+  // Central Embossed Seal
   const sealX = width / 2;
   const sealY = footerY + 10;
   const sealRadius = 110;
@@ -584,7 +770,7 @@ function exportCertificatePNG() {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Seal text & icon
+  // Seal content
   ctx.fillStyle = '#ffffff';
   ctx.font = '22px sans-serif';
   ctx.fillText('★ ★ ★', sealX, sealY - 45);
@@ -595,7 +781,7 @@ function exportCertificatePNG() {
   ctx.font = '800 18px Cinzel, serif';
   ctx.fillText('SEAL OF LOVE', sealX, sealY + 55);
 
-  // Download trigger
+  // Download Trigger
   const link = document.createElement('a');
   link.download = `${petName.replace(/\s+/g, '_')}_Official_Certificate.png`;
   link.href = canvas.toDataURL('image/png');
@@ -609,5 +795,5 @@ function exportCertificatePNG() {
   });
 }
 
-// Start
+// Initialize on DOM ready
 init();

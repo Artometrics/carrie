@@ -1,865 +1,1023 @@
 import confetti from 'canvas-confetti';
 
-// --- CURATED BOOKS DATABASE ---
-const BOOKS_DATABASE = [
+// ========================================================
+// 1. DATASETS: TAROT ARCANA, BOOKS & STUDY CAPSULES
+// ========================================================
+
+const TAROT_QUERENTS = [
   {
-    id: 'tomorrow-tomorrow',
-    title: 'Tomorrow, and Tomorrow, and Tomorrow',
-    author: 'Gabrielle Zevin',
-    genre: 'Literary Fiction',
-    rating: 4.8,
-    pages: 416,
-    year: 2022,
-    emblem: '🕹️',
-    gradient: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
-    synopsis: 'Two childhood friends reunite in college to design video games that catapult them to fame, exploring identity, creativity, heartbreak, and platonic love over thirty years.',
-    moods: ['deep', 'cozy', 'escapist'],
-    tropes: ['found-family', 'character-journey'],
-    pacing: 'medium',
-    goal: ['escape', 'humanity'],
-    vibes: ['Found Family', 'Gaming Culture', 'Bittersweet', 'Nostalgic'],
-    amazonAsin: '0593321200'
+    numeral: 'I',
+    symbol: '🔮',
+    name: 'The Alchemist',
+    tagline: 'Seeker of Deep Transformation',
+    meaning: 'You crave narratives that fundamentally alter how you see reality. You hunger for intellect, layered secrets, and profound personal revelation.',
+    vibe: 'deep'
+  },
+  {
+    numeral: 'II',
+    symbol: '🌙',
+    name: 'The Dreamer',
+    tagline: 'Wanderer of Strange Realms',
+    meaning: 'You read to step outside ordinary boundaries. You seek wondrous atmosphere, whimsical poetry, and tender emotional resonance.',
+    vibe: 'cozy'
+  },
+  {
+    numeral: 'III',
+    symbol: '🗡️',
+    name: 'The Shadow Seeker',
+    tagline: 'Voyager into the Dark & Twisted',
+    meaning: 'You are drawn to psychological tension, morally gray protagonists, haunted corridors, and mysteries where nothing is as it seems.',
+    vibe: 'dark'
+  },
+  {
+    numeral: 'IV',
+    symbol: '⭐',
+    name: 'The Star Voyager',
+    tagline: 'Explorer of Sprawling Worlds',
+    meaning: 'You crave epic scope, intricate magic systems, sweeping cosmic journeys, and high stakes that decide the fate of kingdoms.',
+    vibe: 'escapist'
+  },
+  {
+    numeral: 'V',
+    symbol: '🕯️',
+    name: 'The Hermit',
+    tagline: 'Guardian of Quiet Solace',
+    meaning: 'You read for gentle companionship, warm teacups, found families, and quiet moments that restore your faith in human kindness.',
+    vibe: 'cozy'
+  },
+  {
+    numeral: 'VI',
+    symbol: '⚡',
+    name: 'The Rebel',
+    tagline: 'Defier of Fate & Sharp Wit',
+    meaning: 'You desire rapid pacing, biting humor, razor-sharp dialogue, and antiheroes who punch upward against corrupt institutions.',
+    vibe: 'gripping'
+  }
+];
+
+const TAROT_CRUCIBLES = [
+  {
+    numeral: 'VII',
+    symbol: '🗝️',
+    name: 'The Forbidden Labyrinth',
+    tagline: 'Twisted Puzzles & Unreliable Minds',
+    meaning: 'The cards demand a journey where every clue is suspect and the truth must be assembled piece by agonizing piece.',
+    genre: 'thriller'
+  },
+  {
+    numeral: 'VIII',
+    symbol: '🔥',
+    name: 'The Slow Burn',
+    tagline: 'Tension Simmering Beneath the Surface',
+    meaning: 'A path of aching patience, unspoken loyalties, and electric intimacy that ignites into an unforgettable fire.',
+    genre: 'romance'
+  },
+  {
+    numeral: 'IX',
+    symbol: '🏡',
+    name: 'The Sanctuary',
+    tagline: 'Found Family & Gentle Healing',
+    meaning: 'A refuge amidst the storm—discovering your chosen people and learning that belonging is the greatest magic of all.',
+    genre: 'literary'
+  },
+  {
+    numeral: 'X',
+    symbol: '🌌',
+    name: 'The Mythic Quest',
+    tagline: 'Destiny Across Ancient Horizons',
+    meaning: 'A grand odyssey across breathtaking lands, ancient prophecies, and the courage to forge your own legend.',
+    genre: 'fantasy'
+  },
+  {
+    numeral: 'XI',
+    symbol: '🧬',
+    name: 'The Living Archive',
+    tagline: 'Ideas That Reshape Human History',
+    meaning: 'A collision of science, history, and human curiosity that pulls back the curtain on the mysteries of civilization.',
+    genre: 'nonfiction'
+  }
+];
+
+// Rich Curated Books Catalog with Open Library ISBNs and CliffNotes Study Capsules
+const BOOKS_CATALOG = [
+  {
+    id: 'piranesi',
+    title: 'Piranesi',
+    author: 'Susanna Clarke',
+    isbn: '9781635575637',
+    coverFallback: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
+    genres: ['fantasy', 'literary'],
+    vibe: 'deep',
+    pacing: 'balanced',
+    synopsis: 'Piranesi lives in the House. Perhaps he always has. In his notebooks he day by day records its wonders: the labyrinth of halls, the thousands of statues, the tides that rush up staircases.',
+    matchReason: 'A breathtakingly atmospheric literary mystery with profound philosophical depth.',
+    destinyText: '"The Beauty of the House is immeasurable; its Kindness infinite. A sacred labyrinth that mirrors your quest for truth."',
+    capsule: {
+      themes: ['Solitude vs. Isolation', 'The Holiness of Nature & Wonder', 'Corruption of Ambition & Power'],
+      quote: '"The Beauty of the House is immeasurable; its Kindness infinite."',
+      characters: [
+        { name: 'Piranesi', role: 'The Protagonist — innocent, observant scholar of the House' },
+        { name: 'The Other', role: 'The Rival — ambitious, arrogant seeker of worldly power' }
+      ],
+      discussion: 'How does Piranesi’s unconditional gratitude contrast with our modern obsession with conquering our environment?'
+    }
   },
   {
     id: 'project-hail-mary',
     title: 'Project Hail Mary',
     author: 'Andy Weir',
-    genre: 'Sci-Fi & Fantasy',
-    rating: 4.9,
-    pages: 496,
-    year: 2021,
-    emblem: '🚀',
-    gradient: 'linear-gradient(135deg, #064e3b, #10b981)',
-    synopsis: 'A lone astronaut wakes up with amnesia on a desperate interstellar mission to save Earth from an extinction-level solar crisis, only to encounter an unexpected extraterrestrial ally.',
-    moods: ['gripping', 'witty', 'escapist'],
-    tropes: ['found-family', 'puzzle'],
-    pacing: 'fast',
-    goal: ['edge-of-seat', 'slump-buster'],
-    vibes: ['Interstellar Bromance', 'Smart Sci-Fi', 'Humorous', 'High Stakes'],
-    amazonAsin: '0593135202'
+    isbn: '9780593135204',
+    coverFallback: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80',
+    genres: ['fantasy'],
+    vibe: 'escapist',
+    pacing: 'brisk',
+    synopsis: 'Ryland Grace is the sole survivor on a desperate, last-chance mission—and if he fails, humanity and the earth itself will perish.',
+    matchReason: 'Unstoppable scientific optimism, high-stakes space survival, and one of modern fiction’s greatest friendships.',
+    destinyText: '"Alone in the void of space, you discover that interstellar survival hinges on the courage of cross-species connection."',
+    capsule: {
+      themes: ['Scientific Ingenuity', 'Altruism Across Differences', 'The Will to Survive'],
+      quote: '"I am terrifying space monster. You are leaky space blob."',
+      characters: [
+        { name: 'Ryland Grace', role: 'Reluctant middle-school teacher turned humanity’s last astronaut' },
+        { name: 'Rocky', role: 'Ingenious, loyal five-legged alien engineer' }
+      ],
+      discussion: 'Why is optimism and curiosity often more potent than fear when facing existential extinction?'
+    }
   },
   {
     id: 'the-silent-patient',
     title: 'The Silent Patient',
     author: 'Alex Michaelides',
-    genre: 'Mystery & Thriller',
-    rating: 4.6,
-    pages: 336,
-    year: 2019,
-    emblem: '🎭',
-    gradient: 'linear-gradient(135deg, #31103f, #701a75)',
-    synopsis: 'A celebrated painter shoots her husband five times in the face and never speaks another word. A criminal psychotherapist becomes obsessed with uncovering her motive.',
-    moods: ['dark', 'gripping'],
-    tropes: ['unreliable-narrator', 'puzzle'],
-    pacing: 'fast',
-    goal: ['edge-of-seat', 'slump-buster'],
-    vibes: ['Mind Bending Twist', 'Psychological', 'Dark Atmosphere'],
-    amazonAsin: '1250301696'
+    isbn: '9781250301696',
+    coverFallback: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80',
+    genres: ['thriller'],
+    vibe: 'dark',
+    pacing: 'brisk',
+    synopsis: 'Alicia Berenson’s life is seemingly perfect. One evening she shoots her husband five times in the face, and then never speaks another word.',
+    matchReason: 'Gripping psychological labyrinth filled with Greek tragedy motifs and an earth-shattering twist.',
+    destinyText: '"Silence is a scream wrapped in memory. Unravel the locked truth before the mind consumes itself."',
+    capsule: {
+      themes: ['Trauma & Silence', 'Obsession & Transference', 'Myth of Alcestis'],
+      quote: '"One of the hardest things to admit is that we weren’t loved when we needed it most."',
+      characters: [
+        { name: 'Alicia Berenson', role: 'Celebrated painter who murdered her husband in cold blood' },
+        { name: 'Theo Faber', role: 'Psychotherapist obsessed with uncovering her motive' }
+      ],
+      discussion: 'How does childhood neglect warp adult perception, and who was truly the patient in the room?'
+    }
   },
   {
-    id: 'yellowface',
-    title: 'Yellowface',
-    author: 'R.F. Kuang',
-    genre: 'Literary Fiction',
-    rating: 4.5,
-    pages: 336,
-    year: 2023,
-    emblem: '✍️',
-    gradient: 'linear-gradient(135deg, #78350f, #d97706)',
-    synopsis: 'When a rising literary star dies in a freak choking accident, her envious peer steals her unpublished manuscript about Chinese laborers and publishes it as her own under an Asian pseudonym.',
-    moods: ['gripping', 'dark', 'deep'],
-    tropes: ['unreliable-narrator', 'character-journey'],
-    pacing: 'fast',
-    goal: ['slump-buster', 'humanity'],
-    vibes: ['Publishing Satire', 'Cultural Appropriation', 'Cringe Comedy Thriller'],
-    amazonAsin: '006325083X'
+    id: 'house-in-the-cerulean-sea',
+    title: 'The House in the Cerulean Sea',
+    author: 'TJ Klune',
+    isbn: '9781250217288',
+    coverFallback: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80',
+    genres: ['fantasy', 'literary'],
+    vibe: 'cozy',
+    pacing: 'balanced',
+    synopsis: 'Linus Baker is a by-the-book caseworker at the Department in Charge of Magical Youth. He’s tasked with a highly classified assignment on a secluded island orphanage.',
+    matchReason: 'A heartwarming, uplifting embrace of found family and standing up for the misunderstood.',
+    destinyText: '"A warm blanket for the heart. An island where eccentric magical children teach a bureaucrat how to feel alive."',
+    capsule: {
+      themes: ['Chosen Family & Acceptance', 'Bureaucracy vs. Compassion', 'Celebrating Difference'],
+      quote: '"Change often starts with the smallest of whispers. Like-minded people standing up together."',
+      characters: [
+        { name: 'Linus Baker', role: 'Rigid caseworker whose heart expands tenfold' },
+        { name: 'Arthur Parnassus', role: 'Fiercely protective master of the orphanage' }
+      ],
+      discussion: 'How does systemic prejudice masquerade as "polite policy" in our daily institutions?'
+    }
+  },
+  {
+    id: 'tomorrow-and-tomorrow',
+    title: 'Tomorrow, and Tomorrow, and Tomorrow',
+    author: 'Gabrielle Zevin',
+    isbn: '9780593321201',
+    coverFallback: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80',
+    genres: ['literary'],
+    vibe: 'deep',
+    pacing: 'balanced',
+    synopsis: 'On a bitter-cold day, Sam Masur exits a subway car and sees Sadie Green. Thus begins a legendary collaboration in video game design that will catapult them to stardom.',
+    matchReason: 'A profound exploration of creative partnership, lifelong friendship, and grief across thirty years.',
+    destinyText: '"To play a game is to believe in second chances. An ode to creativity, collaboration, and enduring love."',
+    capsule: {
+      themes: ['Creative Intimacy & Complicity', 'Grief & Resilience', 'Play as Healing'],
+      quote: '"There is a time for any fledgling artist when one’s taste exceeds one’s abilities."',
+      characters: [
+        { name: 'Sam Masur', role: 'Brilliant game architect burdened by physical pain' },
+        { name: 'Sadie Green', role: 'Visionary coder wrestling with depression and sexism' }
+      ],
+      discussion: 'Why is platonic creative partnership often more emotionally intense than romantic love?'
+    }
   },
   {
     id: 'fourth-wing',
     title: 'Fourth Wing',
     author: 'Rebecca Yarros',
-    genre: 'Romance & Romantasy',
-    rating: 4.8,
-    pages: 528,
-    year: 2023,
-    emblem: '🐉',
-    gradient: 'linear-gradient(135deg, #450a0a, #dc2626)',
-    synopsis: 'Violet Sorrengail entered the war college expecting a quiet scribe life, but her fierce commander mother forces her to join the deadly dragon riders where graduation means survival.',
-    moods: ['gripping', 'escapist'],
-    tropes: ['slow-burn', 'worldbuilding'],
-    pacing: 'fast',
-    goal: ['escape', 'edge-of-seat'],
-    vibes: ['Enemies to Lovers', 'Dragons', 'Deadly Trials', 'High Tension'],
-    amazonAsin: '1649374046'
+    isbn: '9781649374042',
+    coverFallback: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=400&q=80',
+    genres: ['fantasy', 'romance'],
+    vibe: 'gripping',
+    pacing: 'brisk',
+    synopsis: 'Twenty-year-old Violet Sorrengail was supposed to enter the quiet Scribe Quadrant. Instead, the commanding general orders her to join the deadly dragon riders.',
+    matchReason: 'Relentless pacing, fierce dragons, deadly academy trials, and undeniable romantic tension.',
+    destinyText: '"A dragon without its rider is a tragedy. A rider without their dragon is dead. Climb or perish."',
+    capsule: {
+      themes: ['Survival of the Underdog', 'Forbidden Desire & Trust', 'The Weight of Family Expectation'],
+      quote: '"I will not die today. Hope is a fickle, dangerous thing."',
+      characters: [
+        { name: 'Violet Sorrengail', role: 'Clever, frail cadet defying the brutal death odds' },
+        { name: 'Xaden Riorson', role: 'Lethal wing leader harboring rebel secrets' }
+      ],
+      discussion: 'How does physical vulnerability force characters to rely on mental agility and strategic alliances?'
+    }
   },
   {
-    id: 'midnight-library',
-    title: 'The Midnight Library',
-    author: 'Matt Haig',
-    genre: 'Literary Fiction',
-    rating: 4.7,
-    pages: 304,
-    year: 2020,
-    emblem: '🕰️',
-    gradient: 'linear-gradient(135deg, #0f172a, #38bdf8)',
-    synopsis: 'Between life and death stands a library containing endless books—each providing a chance to experience what your life would look like if you had made different choices.',
-    moods: ['cozy', 'deep'],
-    tropes: ['character-journey'],
-    pacing: 'medium',
-    goal: ['humanity', 'escape'],
-    vibes: ['Life Affirming', 'Philosophical', 'Magical Realism', 'Second Chances'],
-    amazonAsin: '0525559477'
-  },
-  {
-    id: 'piranesi',
-    title: 'Piranesi',
-    author: 'Susanna Clarke',
-    genre: 'Sci-Fi & Fantasy',
-    rating: 4.7,
-    pages: 272,
-    year: 2020,
-    emblem: '🏛️',
-    gradient: 'linear-gradient(135deg, #134e4a, #2dd4bf)',
-    synopsis: 'Piranesi lives in a labyrinthine House of infinite halls lined with thousands of classical statues, where ocean tides surge up staircases and clouds drift through upper chambers.',
-    moods: ['deep', 'dark', 'escapist'],
-    tropes: ['puzzle', 'character-journey'],
-    pacing: 'medium',
-    goal: ['escape', 'humanity'],
-    vibes: ['Surreal Beauty', 'Dreamlike', 'Labyrinth Mystery', 'Quiet Wonder'],
-    amazonAsin: '163557563X'
-  },
-  {
-    id: 'demon-copperhead',
-    title: 'Demon Copperhead',
-    author: 'Barbara Kingsolver',
-    genre: 'Literary Fiction',
-    rating: 4.9,
-    pages: 560,
-    year: 2022,
-    emblem: '⛰️',
-    gradient: 'linear-gradient(135deg, #713f12, #ca8a04)',
-    synopsis: 'Pulitzer Prize winner set in the mountains of southern Appalachia, reimagining David Copperfield through a redheaded boy navigating foster care, addiction, resilience, and survival.',
-    moods: ['deep', 'dark'],
-    tropes: ['found-family', 'character-journey'],
-    pacing: 'epic',
-    goal: ['humanity'],
-    vibes: ['Pulitzer Winner', 'Appalachian Epic', 'Gritty Resilience', 'Masterpiece'],
-    amazonAsin: '0063251925'
-  },
-  {
-    id: 'thursday-murder-club',
-    title: 'The Thursday Murder Club',
-    author: 'Richard Osman',
-    genre: 'Mystery & Thriller',
-    rating: 4.6,
-    pages: 368,
-    year: 2020,
-    emblem: '🔍',
-    gradient: 'linear-gradient(135deg, #1e293b, #64748b)',
-    synopsis: 'Four unlikely septuagenarian friends in a peaceful retirement village investigate unsolved crimes for fun on Thursdays until a real, brutal murder happens right on their doorstep.',
-    moods: ['cozy', 'witty', 'gripping'],
-    tropes: ['found-family', 'puzzle', 'small-town'],
-    pacing: 'medium',
-    goal: ['escape', 'slump-buster'],
-    vibes: ['British Charm', 'Witty Sleuths', 'Heartwarming Murder Mystery'],
-    amazonAsin: '1984880969'
-  },
-  {
-    id: 'crying-in-h-mart',
-    title: 'Crying in H Mart',
-    author: 'Michelle Zauner',
-    genre: 'Non-Fiction & Memoir',
-    rating: 4.8,
-    pages: 256,
-    year: 2021,
-    emblem: '🍜',
-    gradient: 'linear-gradient(135deg, #831843, #f43f5e)',
-    synopsis: 'Indie rock musician Japanese Breakfast reflects on Korean-American identity, delicious food rituals, complicated family expectations, and grief following her mother’s terminal diagnosis.',
-    moods: ['deep', 'cozy'],
-    tropes: ['character-journey'],
-    pacing: 'medium',
-    goal: ['humanity'],
-    vibes: ['Culinary Love Letter', 'Grief & Healing', 'Raw & Moving', 'Memoir'],
-    amazonAsin: '0525657746'
+    id: 'yellowface',
+    title: 'Yellowface',
+    author: 'R.F. Kuang',
+    isbn: '9780063250833',
+    coverFallback: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=400&q=80',
+    genres: ['literary', 'thriller'],
+    vibe: 'dark',
+    pacing: 'brisk',
+    synopsis: 'When darling author Athena Liu dies in a freak accident, jealous friend June Hayward steals her unfinished manuscript about Chinese laborers in WWI and publishes it as her own.',
+    matchReason: 'A razor-sharp, satirical, and uncomfortably addictive look at publishing, cultural appropriation, and internet outrage.',
+    destinyText: '"Envy is a poison that tastes like ambition. How far will you run with a stolen ghost?"',
+    capsule: {
+      themes: ['Cultural Theft & Ownership', 'The Machine of Publishing', 'Social Media Lynch Mobs'],
+      quote: '"Writing is a fundamentally isolated, lonely thing. Theft makes it a spectator sport."',
+      characters: [
+        { name: 'June Hayward (Juniper Song)', role: 'Unreliable, defensively envious narrator' },
+        { name: 'Athena Liu', role: 'Dazzling literary prodigy whose shadow looms large' }
+      ],
+      discussion: 'At what point does "artistic freedom" cross into predatory cultural exploitation?'
+    }
   },
   {
     id: 'atomic-habits',
     title: 'Atomic Habits',
     author: 'James Clear',
-    genre: 'Non-Fiction & Memoir',
-    rating: 4.9,
-    pages: 320,
-    year: 2018,
-    emblem: '⚡',
-    gradient: 'linear-gradient(135deg, #1e3a5f, #0284c7)',
-    synopsis: 'A universally practical guide explaining how microscopic daily shifts compound into extraordinary personal transformations, backed by neuroscience and behavioral psychology.',
-    moods: ['deep', 'witty'],
-    tropes: ['character-journey'],
-    pacing: 'fast',
-    goal: ['humanity', 'slump-buster'],
-    vibes: ['Actionable', 'High Impact', 'Clear Frameworks', 'Game Changer'],
-    amazonAsin: '0735211299'
-  },
-  {
-    id: 'song-of-achilles',
-    title: 'The Song of Achilles',
-    author: 'Madeline Miller',
-    genre: 'Romance & Romantasy',
-    rating: 4.8,
-    pages: 416,
-    year: 2012,
-    emblem: '🏹',
-    gradient: 'linear-gradient(135deg, #7c2d12, #ea580c)',
-    synopsis: 'An unforgettable reimagining of the Iliad through the eyes of awkward exile Patroclus, recounting his tender, fateful bond with golden Greek demigod Achilles.',
-    moods: ['deep', 'escapist', 'dark'],
-    tropes: ['slow-burn', 'character-journey'],
-    pacing: 'medium',
-    goal: ['escape', 'humanity'],
-    vibes: ['Greek Mythology', 'Poetic & Devastating', 'Soulmate Bond'],
-    amazonAsin: '0062060627'
-  },
-  {
-    id: 'lessons-in-chemistry',
-    title: 'Lessons in Chemistry',
-    author: 'Bonnie Garmus',
-    genre: 'Literary Fiction',
-    rating: 4.7,
-    pages: 400,
-    year: 2022,
-    emblem: '🧪',
-    gradient: 'linear-gradient(135deg, #065f46, #059669)',
-    synopsis: 'In 1960s California, brilliant chemist Elizabeth Zott finds her career sabotaged by sexism, only to become the unexpected host of America’s most revolutionary cooking show.',
-    moods: ['witty', 'cozy', 'gripping'],
-    tropes: ['found-family', 'character-journey'],
-    pacing: 'medium',
-    goal: ['slump-buster', 'humanity'],
-    vibes: ['Feminist Triumph', 'Witty & Sharp', 'Cooking Science', 'Beloved Dog Six-Thirty'],
-    amazonAsin: '038554734X'
-  },
-  {
-    id: 'babel',
-    title: 'Babel: Or the Necessity of Violence',
-    author: 'R.F. Kuang',
-    genre: 'Sci-Fi & Fantasy',
-    rating: 4.8,
-    pages: 560,
-    year: 2022,
-    emblem: '🏛️',
-    gradient: 'linear-gradient(135deg, #374151, #9ca3af)',
-    synopsis: 'In Victorian Oxford, the Royal Institute of Translation manipulates magical silver bars fueled by what is lost in translation between languages, fueling the British Empire’s colonial expansion.',
-    moods: ['deep', 'dark', 'escapist'],
-    tropes: ['found-family', 'worldbuilding'],
-    pacing: 'epic',
-    goal: ['escape', 'humanity'],
-    vibes: ['Dark Academia', 'Linguistics Magic', 'Anti-Colonial', 'Stunning Depth'],
-    amazonAsin: '0063021420'
-  },
-  {
-    id: 'house-in-cerulean-sea',
-    title: 'The House in the Cerulean Sea',
-    author: 'TJ Klune',
-    genre: 'Romance & Romantasy',
-    rating: 4.8,
-    pages: 396,
-    year: 2020,
-    emblem: '🌊',
-    gradient: 'linear-gradient(135deg, #0284c7, #38bdf8)',
-    synopsis: 'Linus Baker, a meticulous caseworker at the Department in Charge of Magical Youth, is sent on a classified assignment to an island orphanage housing six dangerous magical children and their charming caretaker.',
-    moods: ['cozy', 'witty'],
-    tropes: ['found-family', 'slow-burn'],
-    pacing: 'medium',
-    goal: ['escape', 'humanity'],
-    vibes: ['Warm Hug', 'Heartfelt', 'Whimsical', 'Found Family Masterpiece'],
-    amazonAsin: '1250217288'
-  },
-  {
-    id: 'seven-husbands-evelyn-hugo',
-    title: 'The Seven Husbands of Evelyn Hugo',
-    author: 'Taylor Jenkins Reid',
-    genre: 'Literary Fiction',
-    rating: 4.8,
-    pages: 400,
-    year: 2017,
-    emblem: '💎',
-    gradient: 'linear-gradient(135deg, #14532d, #16a34a)',
-    synopsis: 'Aging Hollywood icon Evelyn Hugo chooses an unknown magazine reporter to write her tell-all memoir, unveiling ruthless glamour, seven scandalous marriages, and the one true love of her life.',
-    moods: ['gripping', 'escapist', 'deep'],
-    tropes: ['character-journey', 'slow-burn'],
-    pacing: 'fast',
-    goal: ['slump-buster', 'escape'],
-    vibes: ['Old Hollywood Glamour', 'Secret Romance', 'Epic Biography', 'Unputdownable'],
-    amazonAsin: '1501161938'
+    isbn: '9780735211292',
+    coverFallback: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=400&q=80',
+    genres: ['nonfiction'],
+    vibe: 'deep',
+    pacing: 'brisk',
+    synopsis: 'A comprehensive, practical guide on how to change your habits and get 1% better every day through tiny, compounding actions.',
+    matchReason: 'Transformative non-fiction that demystifies personal behavior and habit loops.',
+    destinyText: '"You do not rise to the level of your goals. You fall to the level of your systems."',
+    capsule: {
+      themes: ['Identity-Based Habits', 'The 1% Compounding Rule', 'Environment Design'],
+      quote: '"You do not rise to the level of your goals. You fall to the level of your systems."',
+      characters: [
+        { name: 'The Practitioner', role: 'Anyone seeking deliberate compound growth' }
+      ],
+      discussion: 'Why is focusing on who you want to become far more durable than focusing on what you want to achieve?'
+    }
   }
 ];
 
-// --- QUIZ QUESTIONS CONFIG ---
+// Curated Project Gutenberg Public Domain Classics
+const CURATED_GUTENBERG = [
+  {
+    id: 84,
+    title: 'Frankenstein; Or, The Modern Prometheus',
+    author: 'Mary Wollstonecraft Shelley',
+    year: '1818',
+    subjects: 'Gothic Fiction, Science Fiction, Promethean Myth',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/84/pg84.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/84/84-h/84-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/84.epub3.images'
+  },
+  {
+    id: 1342,
+    title: 'Pride and Prejudice',
+    author: 'Jane Austen',
+    year: '1813',
+    subjects: 'Classic Romance, Social Satire, Regency England',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/1342/pg1342.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/1342/1342-h/1342-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/1342.epub3.images'
+  },
+  {
+    id: 345,
+    title: 'Dracula',
+    author: 'Bram Stoker',
+    year: '1897',
+    subjects: 'Vampire Horror, Epistolary Mystery, Transylvania',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/345/pg345.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/345/345-h/345-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/345.epub3.images'
+  },
+  {
+    id: 174,
+    title: 'The Picture of Dorian Gray',
+    author: 'Oscar Wilde',
+    year: '1890',
+    subjects: 'Aestheticism, Moral Corruption, Gothic Suspense',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/174/pg174.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/174/174-h/174-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/174.epub3.images'
+  },
+  {
+    id: 1661,
+    title: 'The Adventures of Sherlock Holmes',
+    author: 'Arthur Conan Doyle',
+    year: '1892',
+    subjects: 'Detective Fiction, Logic & Deduction, Victorian London',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/1661/pg1661.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/1661/1661-h/1661-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/1661.epub3.images'
+  },
+  {
+    id: 11,
+    title: 'Alice’s Adventures in Wonderland',
+    author: 'Lewis Carroll',
+    year: '1865',
+    subjects: 'Whimsical Fantasy, Surreal Satire, Wonderland',
+    coverUrl: 'https://www.gutenberg.org/cache/epub/11/pg11.cover.medium.jpg',
+    readUrl: 'https://www.gutenberg.org/files/11/11-h/11-h.htm',
+    epubUrl: 'https://www.gutenberg.org/ebooks/11.epub3.images'
+  }
+];
+
+// Quiz Questions
 const QUIZ_QUESTIONS = [
   {
-    category: 'Vibe & Mood',
-    title: 'What emotional atmosphere are you craving right now?',
-    subtitle: 'Choose the overall feeling you want from this book.',
+    prompt: 'What vibe are you craving right now?',
+    subtitle: 'Choose the atmosphere that resonates with your current mood.',
+    key: 'vibe',
     options: [
-      { id: 'cozy', icon: '☕', title: 'Warm, Cozy & Heartfelt', desc: 'Comforting, gentle humor, restorative and comforting like a blanket.' },
-      { id: 'gripping', icon: '⚡', title: 'Fast, High-Octane & Gripping', desc: 'Can\'t look away, turning pages at 1:00 AM, heart pounding.' },
-      { id: 'deep', icon: '🌊', title: 'Thought-Provoking & Philosophical', desc: 'Complex questions about existence, morality, human connection.' },
-      { id: 'dark', icon: '🕯️', title: 'Dark, Atmospheric & Chilling', desc: 'Foreboding shadows, psychological tension, morally gray motives.' },
-      { id: 'escapist', icon: '✨', title: 'Sweeping Escapist Adventure', desc: 'Transport me completely away from the real world into wondrous realms.' },
-      { id: 'witty', icon: '🍸', title: 'Witty, Sharp & Entertaining', desc: 'Clever banter, satire, social commentary with intellectual spark.' }
+      { text: 'Cozy & Comforting', desc: 'Warm tea, gentle pacing, heartwarming characters', icon: '☕', val: 'cozy' },
+      { text: 'Dark & Atmospheric', desc: 'Haunted houses, morally gray minds, brooding secrets', icon: '🕯️', val: 'dark' },
+      { text: 'Pure Escapism & Wonder', desc: 'Magic portals, grand horizons, mind-bending concepts', icon: '🌌', val: 'escapist' },
+      { text: 'Deep & Philosophical', desc: 'Questions about reality, humanity, and existence', icon: '🏛️', val: 'deep' },
+      { text: 'Gripping & Heart-Pounding', desc: 'Cannot put it down, high stakes, adrenaline', icon: '⚡', val: 'gripping' }
     ]
   },
   {
-    category: 'Genre Lean',
-    title: 'Which genre universe do you want to step into?',
-    subtitle: 'Select the genre that sounds most appealing today.',
+    prompt: 'Which genre calls to you today?',
+    subtitle: 'Where does your imagination want to travel?',
+    key: 'genre',
     options: [
-      { id: 'Sci-Fi & Fantasy', icon: '🛸', title: 'Sci-Fi & Fantasy', desc: 'Space odysseys, magical academies, dragons, speculative futures.' },
-      { id: 'Mystery & Thriller', icon: '🔍', title: 'Mystery & Thriller', desc: 'Whodunits, unreliable narrators, chilling twists, detectives.' },
-      { id: 'Literary Fiction', icon: '📚', title: 'Literary Fiction', desc: 'Lyrical prose, layered character studies, contemporary epics.' },
-      { id: 'Romance & Romantasy', icon: '💖', title: 'Romance & Romantasy', desc: 'High tension, enemies to lovers, passionate stakes and chemistry.' },
-      { id: 'Non-Fiction & Memoir', icon: '💡', title: 'Memoir & Big Ideas', desc: 'Incredible real-life journeys, behavioral science, personal growth.' }
+      { text: 'Sci-Fi & Fantasy', desc: 'Dragons, AI, magic, alien skies', icon: '🐉', val: 'fantasy' },
+      { text: 'Mystery & Psychological Thriller', desc: 'Twists, whodunits, unreliable narrators', icon: '🔍', val: 'thriller' },
+      { text: 'Literary Fiction', desc: 'Beautiful prose, character studies, emotional journeys', icon: '✍️', val: 'literary' },
+      { text: 'Romance & Romantasy', desc: 'Slow-burn chemistry, enemies-to-lovers, longing', icon: '❤️', val: 'romance' },
+      { text: 'Non-Fiction & Wisdom', desc: 'Habits, psychology, extraordinary history', icon: '🧠', val: 'nonfiction' }
     ]
   },
   {
-    category: 'Pacing & Length',
-    title: 'What reading rhythm fits your schedule?',
-    subtitle: 'Pacing makes or breaks your reading enjoyment.',
+    prompt: 'What pacing and story length fit your schedule?',
+    subtitle: 'How quickly do you want the narrative to move?',
+    key: 'pacing',
     options: [
-      { id: 'fast', icon: '🐇', title: 'Brisk & Addictive (< 350 pages)', desc: 'Short chapters, cliffhangers, finished in a weekend.' },
-      { id: 'medium', icon: '📖', title: 'Balanced & Immersive (350–450 pages)', desc: 'Room to breathe, rich world details, steady momentum.' },
-      { id: 'epic', icon: '🏔️', title: 'Sweeping Doorstopper (500+ pages)', desc: 'Deep multi-layered universe you can live inside for weeks.' }
-    ]
-  },
-  {
-    category: 'Favorite Tropes',
-    title: 'Which story element makes you fall in love?',
-    subtitle: 'The specific trope or ingredient you can never resist.',
-    options: [
-      { id: 'found-family', icon: '🤝', title: 'Found Family & Fierce Loyalty', desc: 'Misfits who choose each other against all odds.' },
-      { id: 'unreliable-narrator', icon: '🎭', title: 'Unreliable Narrator & Big Twists', desc: 'Nothing is as it seems, jaw-dropping revelations.' },
-      { id: 'slow-burn', icon: '🔥', title: 'Slow-Burn Tension & Banter', desc: 'Unspoken longing, crackling chemistry, earned payoff.' },
-      { id: 'puzzle', icon: '🧩', title: 'Clever Puzzles & Survival Games', desc: 'Using wits and intellect to solve insurmountable puzzles.' },
-      { id: 'worldbuilding', icon: '🗺️', title: 'Rich Lore & Magic Systems', desc: 'Intricate politics, histories, languages, and cultures.' },
-      { id: 'character-journey', icon: '🌱', title: 'Deep Emotional Growth', desc: 'A protagonist who is profoundly transformed by the end.' }
-    ]
-  },
-  {
-    category: 'Reading Objective',
-    title: 'What is your primary reading mission right now?',
-    subtitle: 'Tell Carrie what this book needs to do for you.',
-    options: [
-      { id: 'slump-buster', icon: '🚀', title: 'Break Out of a Reading Slump', desc: 'Must grab my attention immediately and make reading fun again.' },
-      { id: 'escape', icon: '🌌', title: 'Pure Escapism from Everyday Stress', desc: 'Total immersion so I can forget my to-do list.' },
-      { id: 'humanity', icon: '❤️', title: 'Feel Something Deep & Meaningful', desc: 'Resonant themes that stick with me long after the final page.' },
-      { id: 'edge-of-seat', icon: '🎢', title: 'Keep Me on the Edge of My Seat', desc: 'Adrenaline, high stakes, and sheer momentum.' }
+      { text: 'Brisk & Page-Turning', desc: 'Short chapters, relentless momentum (under 350 pages)', icon: '⚡', val: 'brisk' },
+      { text: 'Balanced & Immersive', desc: 'Room to breathe with steady narrative progress', icon: '📖', val: 'balanced' },
+      { text: 'Sweeping Epic', desc: 'Massive worldbuilding, complex timelines (500+ pages)', icon: '🏰', val: 'epic' }
     ]
   }
 ];
 
-// --- APP STATE ---
-let currentQuizStep = 0;
-let userAnswers = {};
-let savedBookIds = JSON.parse(localStorage.getItem('carrie_saved_books') || '[]');
-let affiliateTag = localStorage.getItem('carrie_amazon_tag') || 'carrie-20';
+// ========================================================
+// 2. STATE & CONFIGURATION
+// ========================================================
+let amazonTag = localStorage.getItem('carrie_amazon_tag') || 'carrie-20';
+let readingShelf = JSON.parse(localStorage.getItem('carrie_reading_shelf') || '[]');
 
-// DOM Elements
-const heroSection = document.getElementById('heroSection');
-const quizSection = document.getElementById('quizSection');
-const resultsSection = document.getElementById('resultsSection');
-const browseSection = document.getElementById('browseSection');
-const savedSection = document.getElementById('savedSection');
+let currentQuerent = TAROT_QUERENTS[0];
+let currentCrucible = TAROT_CRUCIBLES[0];
+let currentDestinyBook = BOOKS_CATALOG[0];
 
-const navLogo = document.getElementById('navLogo');
-const navQuizBtn = document.getElementById('navQuizBtn');
-const navBrowseBtn = document.getElementById('navBrowseBtn');
-const navSavedBtn = document.getElementById('navSavedBtn');
-const savedCountBadge = document.getElementById('savedCountBadge');
+let activeQuizIndex = 0;
+let quizAnswers = {};
 
-const startQuizBtn = document.getElementById('startQuizBtn');
-const randomSurpriseBtn = document.getElementById('randomSurpriseBtn');
-const quizProgressBar = document.getElementById('quizProgressBar');
-const quizStepText = document.getElementById('quizStepText');
-const quizCategoryBadge = document.getElementById('quizCategoryBadge');
-const quizQuestionTitle = document.getElementById('quizQuestionTitle');
-const quizQuestionSubtitle = document.getElementById('quizQuestionSubtitle');
-const quizOptionsGrid = document.getElementById('quizOptionsGrid');
-const quizPrevBtn = document.getElementById('quizPrevBtn');
-const quizNextBtn = document.getElementById('quizNextBtn');
-const quizRestartBtn = document.getElementById('quizRestartBtn');
+// ========================================================
+// 3. DOM ELEMENTS
+// ========================================================
+const navTabs = document.querySelectorAll('.nav-tab');
+const contentViews = document.querySelectorAll('.content-view');
 
+// Tarot Elements
+const shuffleDrawBtn = document.getElementById('shuffleDrawBtn');
+const resetOracleBtn = document.getElementById('resetOracleBtn');
+const tarotCard1 = document.getElementById('tarotCard1');
+const tarotCard2 = document.getElementById('tarotCard2');
+const tarotCard3 = document.getElementById('tarotCard3');
+const card1Symbol = document.getElementById('card1Symbol');
+const card1Name = document.getElementById('card1Name');
+const card1Tagline = document.getElementById('card1Tagline');
+const card1Meaning = document.getElementById('card1Meaning');
+const card2Symbol = document.getElementById('card2Symbol');
+const card2Name = document.getElementById('card2Name');
+const card2Tagline = document.getElementById('card2Tagline');
+const card2Meaning = document.getElementById('card2Meaning');
+const card3CoverImg = document.getElementById('card3CoverImg');
+const card3BookTitle = document.getElementById('card3BookTitle');
+const card3BookAuthor = document.getElementById('card3BookAuthor');
+const card3DestinyText = document.getElementById('card3DestinyText');
+const fatedCapsuleBtn = document.getElementById('fatedCapsuleBtn');
+const fatedAmazonBtn = document.getElementById('fatedAmazonBtn');
+const divinationSynthesis = document.getElementById('divinationSynthesis');
+const synthesisTitle = document.getElementById('synthesisTitle');
+const synthesisText = document.getElementById('synthesisText');
+
+// Quiz Elements
+const quizStepIndicator = document.getElementById('quizStepIndicator');
+const progressBarFill = document.getElementById('progressBarFill');
+const questionPrompt = document.getElementById('questionPrompt');
+const questionSubtitle = document.getElementById('questionSubtitle');
+const optionsGrid = document.getElementById('optionsGrid');
+const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+const quizResultsContainer = document.getElementById('quizResultsContainer');
+const quizResultsGrid = document.getElementById('quizResultsGrid');
 const retakeQuizBtn = document.getElementById('retakeQuizBtn');
-const shareResultsBtn = document.getElementById('shareResultsBtn');
-const matchCardsGrid = document.getElementById('matchCardsGrid');
-const resultsSummaryText = document.getElementById('resultsSummaryText');
 
-const browseCardsGrid = document.getElementById('browseCardsGrid');
+// Gutenberg Elements
+const gutenbergSearchInput = document.getElementById('gutenbergSearchInput');
+const gutenbergSearchBtn = document.getElementById('gutenbergSearchBtn');
+const gutenbergGrid = document.getElementById('gutenbergGrid');
+
+// Library Elements
 const librarySearchInput = document.getElementById('librarySearchInput');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
-const genreFilterTabs = document.getElementById('genreFilterTabs');
+const genreFilterSelect = document.getElementById('genreFilterSelect');
+const allBooksGrid = document.getElementById('allBooksGrid');
 
-const savedCardsGrid = document.getElementById('savedCardsGrid');
-const emptySavedState = document.getElementById('emptySavedState');
-const clearSavedBtn = document.getElementById('clearSavedBtn');
+// Modals
+const capsuleModal = document.getElementById('capsuleModal');
+const closeCapsuleBtn = document.getElementById('closeCapsuleBtn');
+const capsuleContent = document.getElementById('capsuleContent');
+
+const readerModal = document.getElementById('readerModal');
+const closeReaderBtn = document.getElementById('closeReaderBtn');
+const readerBookTitle = document.getElementById('readerBookTitle');
+const readerBookAuthor = document.getElementById('readerBookAuthor');
+const readerViewport = document.getElementById('readerViewport');
+const readerDownloadEpubLink = document.getElementById('readerDownloadEpubLink');
+
+const shelfDrawer = document.getElementById('shelfDrawer');
+const shelfDrawerBtn = document.getElementById('shelfDrawerBtn');
+const closeShelfBtn = document.getElementById('closeShelfBtn');
+const shelfItemsList = document.getElementById('shelfItemsList');
+const shelfBadge = document.getElementById('shelfBadge');
 
 const affiliateModal = document.getElementById('affiliateModal');
-const affiliateSettingsBtn = document.getElementById('affiliateSettingsBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
+const affiliateConfigBtn = document.getElementById('affiliateConfigBtn');
+const closeAffiliateBtn = document.getElementById('closeAffiliateBtn');
 const affiliateTagInput = document.getElementById('affiliateTagInput');
-const saveAffiliateTagBtn = document.getElementById('saveAffiliateTagBtn');
-const toastNotification = document.getElementById('toastNotification');
-const themeToggleBtn = document.getElementById('themeToggleBtn');
+const saveAffiliateBtn = document.getElementById('saveAffiliateBtn');
 
-// --- INITIALIZATION ---
+// ========================================================
+// 4. INITIALIZATION
+// ========================================================
 function init() {
-  updateSavedBadge();
-  setupEventListeners();
-  renderBrowseBooks(BOOKS_DATABASE);
-  applyTheme();
+  setupNavigation();
+  setupTarot();
+  setupQuiz();
+  setupGutenberg();
+  setupLibrary();
+  setupModals();
+  updateShelfBadge();
+
+  // Draw initial Tarot cards
+  drawTarotCards(false);
 }
 
-function setupEventListeners() {
-  navLogo.addEventListener('click', (e) => {
-    e.preventDefault();
-    showHero();
-  });
-  navQuizBtn.addEventListener('click', () => startQuiz());
-  startQuizBtn.addEventListener('click', () => startQuiz());
-  navBrowseBtn.addEventListener('click', () => showBrowse());
-  navSavedBtn.addEventListener('click', () => showSaved());
-
-  randomSurpriseBtn.addEventListener('click', () => {
-    const randomBook = BOOKS_DATABASE[Math.floor(Math.random() * BOOKS_DATABASE.length)];
-    renderMatchedBooks([randomBook], true);
-    showResults();
-    triggerCelebration();
-  });
-
-  quizRestartBtn.addEventListener('click', () => startQuiz());
-  quizPrevBtn.addEventListener('click', () => goToPrevQuestion());
-  quizNextBtn.addEventListener('click', () => goToNextQuestion());
-  retakeQuizBtn.addEventListener('click', () => startQuiz());
-  shareResultsBtn.addEventListener('click', () => shareResults());
-
-  librarySearchInput.addEventListener('input', handleLibrarySearch);
-  clearSearchBtn.addEventListener('click', () => {
-    librarySearchInput.value = '';
-    clearSearchBtn.classList.add('hidden');
-    handleLibrarySearch();
-  });
-
-  genreFilterTabs.querySelectorAll('.genre-tab').forEach(tab => {
+// ========================================================
+// 5. NAVIGATION BETWEEN TABS
+// ========================================================
+function setupNavigation() {
+  navTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      genreFilterTabs.querySelectorAll('.genre-tab').forEach(t => t.classList.remove('active'));
+      navTabs.forEach(t => t.classList.remove('active'));
+      contentViews.forEach(v => v.classList.add('hidden'));
+
       tab.classList.add('active');
-      filterBrowseByGenre(tab.dataset.genre);
+      const tabName = tab.dataset.tab;
+      document.getElementById(`${tabName}Section`).classList.remove('hidden');
+
+      if (tabName === 'gutenberg' && gutenbergGrid.children.length <= 1) {
+        renderGutenbergBooks(CURATED_GUTENBERG);
+      }
+    });
+  });
+}
+
+// ========================================================
+// 6. THE LITERARY TAROT (BIBLIOMANCY)
+// ========================================================
+function setupTarot() {
+  shuffleDrawBtn.addEventListener('click', () => drawTarotCards(true));
+  resetOracleBtn.addEventListener('click', () => {
+    [tarotCard1, tarotCard2, tarotCard3].forEach(c => c.classList.remove('flipped'));
+    divinationSynthesis.classList.add('hidden');
+    resetOracleBtn.classList.add('hidden');
+    shuffleDrawBtn.classList.remove('hidden');
+  });
+
+  // Tap to flip individual cards
+  [tarotCard1, tarotCard2, tarotCard3].forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+      checkAllFlipped();
     });
   });
 
-  clearSavedBtn.addEventListener('click', () => {
-    if (confirm('Clear your entire reading shelf?')) {
-      savedBookIds = [];
-      localStorage.setItem('carrie_saved_books', JSON.stringify(savedBookIds));
-      updateSavedBadge();
-      renderSavedBooks();
-      showToast('Reading list cleared');
+  fatedCapsuleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openStudyCapsule(currentDestinyBook);
+  });
+}
+
+function drawTarotCards(withAnimation = true) {
+  // Randomly select 3 cards
+  currentQuerent = TAROT_QUERENTS[Math.floor(Math.random() * TAROT_QUERENTS.length)];
+  currentCrucible = TAROT_CRUCIBLES[Math.floor(Math.random() * TAROT_CRUCIBLES.length)];
+
+  // Pick matching book or random book
+  const matches = BOOKS_CATALOG.filter(b => b.vibe === currentQuerent.vibe || b.genres.includes(currentCrucible.genre));
+  currentDestinyBook = matches.length > 0 
+    ? matches[Math.floor(Math.random() * matches.length)]
+    : BOOKS_CATALOG[Math.floor(Math.random() * BOOKS_CATALOG.length)];
+
+  // Populate Card 1
+  card1Symbol.textContent = currentQuerent.symbol;
+  card1Name.textContent = currentQuerent.name;
+  card1Tagline.textContent = currentQuerent.tagline;
+  card1Meaning.textContent = currentQuerent.meaning;
+
+  // Populate Card 2
+  card2Symbol.textContent = currentCrucible.symbol;
+  card2Name.textContent = currentCrucible.name;
+  card2Tagline.textContent = currentCrucible.tagline;
+  card2Meaning.textContent = currentCrucible.meaning;
+
+  // Populate Card 3 (Book)
+  card3BookTitle.textContent = currentDestinyBook.title;
+  card3BookAuthor.textContent = `by ${currentDestinyBook.author}`;
+  card3DestinyText.textContent = currentDestinyBook.destinyText;
+  
+  // Real Open Library Cover with Fallback
+  const openLibraryUrl = `https://covers.openlibrary.org/b/isbn/${currentDestinyBook.isbn}-L.jpg?default=false`;
+  card3CoverImg.src = openLibraryUrl;
+  card3CoverImg.onerror = () => { card3CoverImg.src = currentDestinyBook.coverFallback; };
+
+  // Amazon Affiliate URL
+  fatedAmazonBtn.href = generateAmazonUrl(currentDestinyBook);
+
+  // Populate Synthesis
+  synthesisTitle.textContent = `${currentQuerent.name} in ${currentCrucible.name}`;
+  synthesisText.textContent = `The cards divine that your reading soul is currently aligned with ${currentQuerent.name}. You are summoned to conquer ${currentCrucible.name}. Therefore, destiny bestows upon you "${currentDestinyBook.title}" by ${currentDestinyBook.author}. May its pages enlighten your journey.`;
+
+  if (withAnimation) {
+    // Unflip all cards first
+    [tarotCard1, tarotCard2, tarotCard3].forEach(c => c.classList.remove('flipped'));
+    divinationSynthesis.classList.add('hidden');
+
+    // Sequential dramatic flip
+    setTimeout(() => tarotCard1.classList.add('flipped'), 300);
+    setTimeout(() => tarotCard2.classList.add('flipped'), 800);
+    setTimeout(() => {
+      tarotCard3.classList.add('flipped');
+      divinationSynthesis.classList.remove('hidden');
+      resetOracleBtn.classList.remove('hidden');
+      shuffleDrawBtn.classList.add('hidden');
+
+      confetti({
+        particleCount: 70,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+    }, 1400);
+  }
+}
+
+function checkAllFlipped() {
+  const allFlipped = [tarotCard1, tarotCard2, tarotCard3].every(c => c.classList.contains('flipped'));
+  if (allFlipped) {
+    divinationSynthesis.classList.remove('hidden');
+    resetOracleBtn.classList.remove('hidden');
+    shuffleDrawBtn.classList.add('hidden');
+  }
+}
+
+// ========================================================
+// 7. CLASSIC QUIZ ENGINE
+// ========================================================
+function setupQuiz() {
+  renderQuestion(0);
+
+  nextQuestionBtn.addEventListener('click', () => {
+    if (activeQuizIndex < QUIZ_QUESTIONS.length - 1) {
+      activeQuizIndex++;
+      renderQuestion(activeQuizIndex);
+    } else {
+      showQuizResults();
     }
   });
 
-  affiliateSettingsBtn.addEventListener('click', () => {
-    affiliateTagInput.value = affiliateTag;
-    affiliateModal.classList.remove('hidden');
-  });
-  closeModalBtn.addEventListener('click', () => affiliateModal.classList.add('hidden'));
-  saveAffiliateTagBtn.addEventListener('click', () => {
-    affiliateTag = affiliateTagInput.value.trim() || 'carrie-20';
-    localStorage.setItem('carrie_amazon_tag', affiliateTag);
-    affiliateModal.classList.add('hidden');
-    showToast(`Amazon Tag saved: ${affiliateTag}`);
-    // re-render current views to update Amazon links
-    renderBrowseBooks(getFilteredBooks());
-    if (!resultsSection.classList.contains('hidden')) {
-      calculateAndShowResults();
+  prevQuestionBtn.addEventListener('click', () => {
+    if (activeQuizIndex > 0) {
+      activeQuizIndex--;
+      renderQuestion(activeQuizIndex);
     }
   });
 
-  themeToggleBtn.addEventListener('click', toggleTheme);
+  retakeQuizBtn.addEventListener('click', () => {
+    activeQuizIndex = 0;
+    quizAnswers = {};
+    quizResultsContainer.classList.add('hidden');
+    document.getElementById('quizQuestionCard').parentElement.classList.remove('hidden');
+    renderQuestion(0);
+  });
 }
 
-// --- VIEW NAVIGATION ---
-function hideAllSections() {
-  heroSection.classList.add('hidden');
-  quizSection.classList.add('hidden');
-  resultsSection.classList.add('hidden');
-  browseSection.classList.add('hidden');
-  savedSection.classList.add('hidden');
+function renderQuestion(index) {
+  const q = QUIZ_QUESTIONS[index];
+  quizStepIndicator.textContent = `Question ${index + 1} of ${QUIZ_QUESTIONS.length}`;
+  progressBarFill.style.width = `${((index + 1) / QUIZ_QUESTIONS.length) * 100}%`;
 
-  navQuizBtn.classList.remove('active');
-  navBrowseBtn.classList.remove('active');
-  navSavedBtn.classList.remove('active');
+  questionPrompt.textContent = q.prompt;
+  questionSubtitle.textContent = q.subtitle;
+
+  prevQuestionBtn.disabled = index === 0;
+  nextQuestionBtn.disabled = !quizAnswers[q.key];
+
+  optionsGrid.innerHTML = q.options.map(opt => `
+    <button class="option-btn ${quizAnswers[q.key] === opt.val ? 'selected' : ''}" data-val="${opt.val}">
+      <span class="option-icon">${opt.icon}</span>
+      <div class="option-text">
+        <strong>${opt.text}</strong>
+        <span>${opt.desc}</span>
+      </div>
+    </button>
+  `).join('');
+
+  optionsGrid.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      quizAnswers[q.key] = btn.dataset.val;
+      optionsGrid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      nextQuestionBtn.disabled = false;
+    });
+  });
 }
 
-function showHero() {
-  hideAllSections();
-  heroSection.classList.remove('hidden');
+function showQuizResults() {
+  document.getElementById('quizQuestionCard').parentElement.classList.add('hidden');
+  quizResultsContainer.classList.remove('hidden');
+
+  // Score books
+  const scored = BOOKS_CATALOG.map(book => {
+    let score = 50;
+    if (book.vibe === quizAnswers.vibe) score += 25;
+    if (book.genres.includes(quizAnswers.genre)) score += 20;
+    if (book.pacing === quizAnswers.pacing) score += 10;
+    return { ...book, matchPct: Math.min(score, 99) };
+  }).sort((a, b) => b.matchPct - a.matchPct);
+
+  quizResultsGrid.innerHTML = scored.slice(0, 4).map(book => renderBookCardHTML(book, true)).join('');
+  attachBookCardHandlers(quizResultsGrid);
+
+  confetti({
+    particleCount: 80,
+    spread: 70,
+    origin: { y: 0.5 }
+  });
 }
 
-function startQuiz() {
-  hideAllSections();
-  quizSection.classList.remove('hidden');
-  navQuizBtn.classList.add('active');
-  currentQuizStep = 0;
-  userAnswers = {};
-  renderQuizQuestion();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// ========================================================
+// 8. PROJECT GUTENBERG PRESS VAULT (GUTENDEX API)
+// ========================================================
+function setupGutenberg() {
+  renderGutenbergBooks(CURATED_GUTENBERG);
+
+  gutenbergSearchBtn.addEventListener('click', () => executeGutenbergSearch());
+  gutenbergSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') executeGutenbergSearch();
+  });
 }
 
-window.showQuiz = startQuiz;
-
-function showResults() {
-  hideAllSections();
-  resultsSection.classList.remove('hidden');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showBrowse() {
-  hideAllSections();
-  browseSection.classList.remove('hidden');
-  navBrowseBtn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showSaved() {
-  hideAllSections();
-  savedSection.classList.remove('hidden');
-  navSavedBtn.classList.add('active');
-  renderSavedBooks();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// --- QUIZ LOGIC ---
-function renderQuizQuestion() {
-  const q = QUIZ_QUESTIONS[currentQuizStep];
-  const total = QUIZ_QUESTIONS.length;
-  const progressPct = ((currentQuizStep + 1) / total) * 100;
-
-  quizProgressBar.style.width = `${progressPct}%`;
-  quizStepText.textContent = `Question ${currentQuizStep + 1} of ${total}`;
-  quizCategoryBadge.textContent = q.category;
-  quizQuestionTitle.textContent = q.title;
-  quizQuestionSubtitle.textContent = q.subtitle;
-
-  quizPrevBtn.disabled = currentQuizStep === 0;
-  quizNextBtn.disabled = !userAnswers[currentQuizStep];
-  quizNextBtn.textContent = (currentQuizStep === total - 1) ? 'See My Matches ✨' : 'Next →';
-
-  quizOptionsGrid.innerHTML = q.options.map(opt => {
-    const isSelected = userAnswers[currentQuizStep] === opt.id;
-    return `
-      <div class="quiz-option-card ${isSelected ? 'selected' : ''}" data-opt-id="${opt.id}">
-        <span class="option-icon">${opt.icon}</span>
-        <div class="option-content">
-          <span class="option-title">${opt.title}</span>
-          <span class="option-desc">${opt.desc}</span>
+function renderGutenbergBooks(books) {
+  gutenbergGrid.innerHTML = books.map(book => `
+    <article class="gutenberg-card">
+      <div class="gutenberg-card-top">
+        <img src="${book.coverUrl || 'https://www.gutenberg.org/cache/epub/84/pg84.cover.medium.jpg'}" alt="${book.title}" class="gutenberg-thumb" loading="lazy">
+        <div class="gutenberg-meta">
+          <h4>${book.title}</h4>
+          <span>by ${book.author} (${book.year || 'Classic'})</span>
+          <span class="gutenberg-downloads">🏛️ Project Gutenberg #${book.id}</span>
         </div>
       </div>
-    `;
-  }).join('');
+      <div class="gutenberg-actions">
+        <button class="btn btn-outline btn-sm read-classic-btn" data-id="${book.id}" data-title="${book.title}" data-author="${book.author}" data-url="${book.readUrl}" data-epub="${book.epubUrl}">
+          📖 Read Online Free
+        </button>
+        <a href="${book.epubUrl || `https://www.gutenberg.org/ebooks/${book.id}.epub3.images`}" target="_blank" class="btn btn-ghost btn-sm">
+          📥 EPUB
+        </a>
+      </div>
+    </article>
+  `).join('');
 
-  quizOptionsGrid.querySelectorAll('.quiz-option-card').forEach(card => {
-    card.addEventListener('click', () => {
-      quizOptionsGrid.querySelectorAll('.quiz-option-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      userAnswers[currentQuizStep] = card.dataset.optId;
-      quizNextBtn.disabled = false;
-
-      // Auto-advance on option click for brisk mobile feel
-      setTimeout(() => {
-        goToNextQuestion();
-      }, 220);
+  gutenbergGrid.querySelectorAll('.read-classic-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openEbookReader({
+        title: btn.dataset.title,
+        author: btn.dataset.author,
+        readUrl: btn.dataset.url,
+        epubUrl: btn.dataset.epub
+      });
     });
   });
 }
 
-function goToNextQuestion() {
-  if (!userAnswers[currentQuizStep]) return;
-  if (currentQuizStep < QUIZ_QUESTIONS.length - 1) {
-    currentQuizStep++;
-    renderQuizQuestion();
-  } else {
-    calculateAndShowResults();
+async function executeGutenbergSearch() {
+  const query = gutenbergSearchInput.value.trim();
+  if (!query) return;
+
+  gutenbergGrid.innerHTML = `<div class="loading-spinner">Searching Gutenberg archives for "${query}"...</div>`;
+
+  try {
+    const res = await fetch(`https://gutendex.com/books/?search=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    
+    if (!data.results || data.results.length === 0) {
+      gutenbergGrid.innerHTML = `<div class="empty-shelf">No classics found for "${query}". Try searching for Frankenstein, Dracula, or Austen.</div>`;
+      return;
+    }
+
+    const transformed = data.results.slice(0, 12).map(item => ({
+      id: item.id,
+      title: item.title,
+      author: item.authors[0] ? item.authors[0].name : 'Unknown Author',
+      year: item.authors[0] ? item.authors[0].birth_year : '',
+      coverUrl: item.formats['image/jpeg'] || `https://www.gutenberg.org/cache/epub/${item.id}/pg${item.id}.cover.medium.jpg`,
+      readUrl: item.formats['text/html'] || item.formats['text/plain; charset=utf-8'],
+      epubUrl: item.formats['application/epub+zip'] || `https://www.gutenberg.org/ebooks/${item.id}.epub3.images`
+    }));
+
+    renderGutenbergBooks(transformed);
+  } catch (err) {
+    gutenbergGrid.innerHTML = `<div class="empty-shelf">Could not connect to Gutenberg server. Showing curated classics.</div>`;
+    setTimeout(() => renderGutenbergBooks(CURATED_GUTENBERG), 2000);
   }
 }
 
-function goToPrevQuestion() {
-  if (currentQuizStep > 0) {
-    currentQuizStep--;
-    renderQuizQuestion();
-  }
+// ========================================================
+// 9. MODERN CATALOG LIBRARY
+// ========================================================
+function setupLibrary() {
+  renderLibraryBooks(BOOKS_CATALOG);
+
+  librarySearchInput.addEventListener('input', filterLibrary);
+  genreFilterSelect.addEventListener('change', filterLibrary);
 }
 
-// --- RECOMMENDATION SCORING ALGORITHM ---
-function calculateAndShowResults() {
-  const selectedMood = userAnswers[0];
-  const selectedGenre = userAnswers[1];
-  const selectedPacing = userAnswers[2];
-  const selectedTrope = userAnswers[3];
-  const selectedGoal = userAnswers[4];
+function filterLibrary() {
+  const query = librarySearchInput.value.toLowerCase().trim();
+  const selectedGenre = genreFilterSelect.value;
 
-  // Score each book
-  const scoredBooks = BOOKS_DATABASE.map(book => {
-    let score = 0;
-    const reasons = [];
-
-    // Genre alignment (weight: 35)
-    if (book.genre === selectedGenre) {
-      score += 35;
-      reasons.push(`Hits your preferred genre: ${book.genre}`);
-    } else {
-      score += 10;
-    }
-
-    // Mood alignment (weight: 25)
-    if (book.moods.includes(selectedMood)) {
-      score += 25;
-      reasons.push(`Matches your ${selectedMood} reading vibe`);
-    }
-
-    // Trope alignment (weight: 20)
-    if (book.tropes.includes(selectedTrope)) {
-      score += 20;
-      reasons.push(`Features the ${selectedTrope.replace('-', ' ')} trope you crave`);
-    }
-
-    // Pacing alignment (weight: 10)
-    if (book.pacing === selectedPacing) {
-      score += 10;
-      reasons.push(`Ideal ${book.pacing} pacing & length (${book.pages} pages)`);
-    }
-
-    // Goal alignment (weight: 10)
-    if (book.goal.includes(selectedGoal)) {
-      score += 10;
-      reasons.push(`Tailored to help you ${selectedGoal.replace('-', ' ')}`);
-    }
-
-    // Add baseline score
-    const matchPercentage = Math.min(99, Math.max(76, Math.round(score)));
-
-    return {
-      ...book,
-      matchPercentage,
-      reasons: reasons.slice(0, 3)
-    };
+  const filtered = BOOKS_CATALOG.filter(book => {
+    const matchesQuery = book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.synopsis.toLowerCase().includes(query);
+    const matchesGenre = selectedGenre === 'all' || book.genres.includes(selectedGenre);
+    return matchesQuery && matchesGenre;
   });
 
-  // Sort descending by match score
-  scoredBooks.sort((a, b) => b.matchPercentage - a.matchPercentage);
-  const topMatches = scoredBooks.slice(0, 4);
-
-  renderMatchedBooks(topMatches);
-  resultsSummaryText.textContent = `Based on your love for ${selectedGenre}, ${selectedMood} mood, and ${selectedTrope.replace('-', ' ')} dynamics, here are your top 4 matches handpicked by Carrie.`;
-  showResults();
-  triggerCelebration();
+  renderLibraryBooks(filtered);
 }
 
-// --- RENDER BOOK CARDS ---
-function createBookCardHTML(book, isMatchView = false) {
-  const isSaved = savedBookIds.includes(book.id);
-  const amazonUrl = `https://www.amazon.com/dp/${book.amazonAsin}?tag=${encodeURIComponent(affiliateTag)}`;
+function renderLibraryBooks(books) {
+  if (books.length === 0) {
+    allBooksGrid.innerHTML = `<div class="empty-shelf" style="grid-column: 1 / -1;">No books matched your search.</div>`;
+    return;
+  }
+  allBooksGrid.innerHTML = books.map(book => renderBookCardHTML(book, false)).join('');
+  attachBookCardHandlers(allBooksGrid);
+}
+
+function renderBookCardHTML(book, showMatch = false) {
+  const isSaved = readingShelf.some(b => b.id === book.id);
+  const openLibraryUrl = `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`;
 
   return `
-    <article class="book-card" data-book-id="${book.id}">
-      <div class="book-cover-banner" style="background: ${book.gradient};">
-        <div class="book-cover-overlay"></div>
-        <span class="book-emblem">${book.emblem}</span>
-        ${isMatchView ? `
-          <div class="match-badge">
-            <span>✨</span> ${book.matchPercentage || 98}% Match
+    <article class="book-card" data-id="${book.id}">
+      <div class="book-card-header">
+        <img src="${openLibraryUrl}" alt="${book.title}" class="book-cover-img" onerror="this.src='${book.coverFallback}'" loading="lazy">
+        <div class="book-header-info">
+          ${showMatch ? `<span class="book-match-badge">${book.matchPct}% Match</span>` : ''}
+          <h3 class="book-title">${book.title}</h3>
+          <span class="book-author">by ${book.author}</span>
+          <div class="book-genres">
+            ${book.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
           </div>
-        ` : ''}
+        </div>
       </div>
 
-      <div class="book-details">
-        <div class="book-meta">
-          <span class="genre-badge">${book.genre}</span>
-          <span class="rating-badge">★ ${book.rating}</span>
-          <span style="font-size: 0.78rem; color: var(--text-dim); margin-left: auto;">${book.pages}p</span>
-        </div>
+      <p class="book-synopsis">${book.synopsis}</p>
+      
+      ${showMatch ? `<div class="book-match-reason">💡 <strong>Why it matches:</strong> ${book.matchReason}</div>` : ''}
 
-        <h3 class="book-title">${book.title}</h3>
-        <span class="book-author">by ${book.author} (${book.year})</span>
-
-        <p class="book-synopsis">${book.synopsis}</p>
-
-        ${isMatchView && book.reasons && book.reasons.length > 0 ? `
-          <div class="book-match-reasons">
-            <span class="match-reasons-title">Why it matches your quiz:</span>
-            <ul class="match-reasons-list">
-              ${book.reasons.map(r => `<li>${r}</li>`).join('')}
-            </ul>
-          </div>
-        ` : ''}
-
-        <div class="vibe-tags">
-          ${book.vibes.map(v => `<span class="vibe-tag">#${v}</span>`).join('')}
-        </div>
-
-        <div class="book-actions">
-          <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-amazon" title="Buy on Amazon (Affiliate Link)">
-            <span>🛒 Buy on Amazon</span>
-          </a>
-          <button class="btn btn-secondary bookmark-btn ${isSaved ? 'active' : ''}" data-id="${book.id}" title="${isSaved ? 'Remove from shelf' : 'Save to shelf'}">
-            <span>${isSaved ? '❤️ Saved' : '🤍 Save'}</span>
-          </button>
-        </div>
+      <div class="book-card-footer">
+        <button class="btn btn-outline btn-sm open-capsule-btn" data-id="${book.id}">
+          📑 Capsule
+        </button>
+        <a href="${generateAmazonUrl(book)}" target="_blank" class="btn btn-primary btn-sm">
+          🛒 Amazon
+        </a>
+        <button class="btn-save-shelf ${isSaved ? 'saved' : ''}" data-id="${book.id}" title="${isSaved ? 'Saved to Shelf' : 'Save to Shelf'}">
+          ${isSaved ? '❤️' : '🤍'}
+        </button>
       </div>
     </article>
   `;
 }
 
-function renderMatchedBooks(books, isSurprise = false) {
-  matchCardsGrid.innerHTML = books.map(b => createBookCardHTML(b, true)).join('');
-  attachCardListeners(matchCardsGrid);
-  if (isSurprise) {
-    resultsSummaryText.textContent = `Surprise literary pick! Here is a critically acclaimed crowd-pleaser that readers adore.`;
-  }
-}
+function attachBookCardHandlers(container) {
+  container.querySelectorAll('.open-capsule-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const book = BOOKS_CATALOG.find(b => b.id === btn.dataset.id);
+      if (book) openStudyCapsule(book);
+    });
+  });
 
-function renderBrowseBooks(books) {
-  browseCardsGrid.innerHTML = books.map(b => createBookCardHTML(b, false)).join('');
-  attachCardListeners(browseCardsGrid);
-}
-
-function renderSavedBooks() {
-  const savedBooks = BOOKS_DATABASE.filter(b => savedBookIds.includes(b.id));
-  if (savedBooks.length === 0) {
-    savedCardsGrid.innerHTML = '';
-    emptySavedState.classList.remove('hidden');
-  } else {
-    emptySavedState.classList.add('hidden');
-    savedCardsGrid.innerHTML = savedBooks.map(b => createBookCardHTML(b, false)).join('');
-    attachCardListeners(savedCardsGrid);
-  }
-}
-
-function attachCardListeners(container) {
-  container.querySelectorAll('.bookmark-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = btn.dataset.id;
-      toggleSavedBook(id);
+  container.querySelectorAll('.btn-save-shelf').forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleSaveShelf(btn.dataset.id, btn);
     });
   });
 }
 
-function toggleSavedBook(id) {
-  const book = BOOKS_DATABASE.find(b => b.id === id);
-  if (savedBookIds.includes(id)) {
-    savedBookIds = savedBookIds.filter(x => x !== id);
-    showToast(`Removed "${book ? book.title : 'Book'}" from reading list`);
-  } else {
-    savedBookIds.push(id);
-    showToast(`Saved "${book ? book.title : 'Book'}" to reading list! 📚`);
+// ========================================================
+// 10. CLIFFNOTES & QUIZLET STUDY CAPSULE MODAL
+// ========================================================
+function openStudyCapsule(book) {
+  const cap = book.capsule;
+  capsuleContent.innerHTML = `
+    <div style="margin-bottom: 1.25rem;">
+      <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.2rem;">${book.title}</h2>
+      <span style="color: var(--gold); font-size: 0.9rem; font-weight: 600;">by ${book.author}</span>
+    </div>
+
+    <!-- Core Themes -->
+    <div class="capsule-section">
+      <h4>🎯 Core Themes & Motifs</h4>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        ${cap.themes.map(t => `<span class="genre-tag" style="background: rgba(212, 175, 55, 0.15); color: #ffd700; font-size: 0.82rem; padding: 0.35rem 0.75rem;">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <!-- Iconic Quote -->
+    <div class="capsule-section">
+      <h4>💬 Iconic Quote</h4>
+      <p class="capsule-quote">${cap.quote}</p>
+    </div>
+
+    <!-- Character Guide -->
+    <div class="capsule-section">
+      <h4>👥 Key Character Dossier</h4>
+      <div class="capsule-grid">
+        ${cap.characters.map(c => `
+          <div class="capsule-grid-item">
+            <strong>${c.name}</strong>
+            <span>${c.role}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Discussion & Study Takeaway -->
+    <div class="capsule-section">
+      <h4>🧠 Study Discussion Question</h4>
+      <p style="font-size: 0.92rem; color: #e2e8f0; line-height: 1.6;">${cap.discussion}</p>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+      <a href="${generateAmazonUrl(book)}" target="_blank" class="btn btn-primary">
+        🛒 Buy Book on Amazon
+      </a>
+    </div>
+  `;
+
+  capsuleModal.classList.remove('hidden');
+}
+
+// ========================================================
+// 11. IN-BROWSER GUTENBERG EBOOK READER
+// ========================================================
+function openEbookReader({ title, author, readUrl, epubUrl }) {
+  readerBookTitle.textContent = title;
+  readerBookAuthor.textContent = `${author} • Free Public Domain`;
+  readerDownloadEpubLink.href = epubUrl;
+  readerViewport.innerHTML = `<div class="reader-loading">Opening Gutenberg text stream for "${title}"...</div>`;
+  readerModal.classList.remove('hidden');
+
+  // Embed clean readable frame or proxy text
+  readerViewport.innerHTML = `
+    <div style="max-width: 680px; margin: 0 auto; text-align: left;">
+      <p style="font-style: italic; color: var(--gold); margin-bottom: 1.5rem;">
+        ✦ Project Gutenberg Complete Public Domain Edition ✦
+      </p>
+      <iframe src="${readUrl}" style="width: 100%; height: 55vh; border: none; background: #ffffff; border-radius: 8px;"></iframe>
+    </div>
+  `;
+}
+
+// ========================================================
+// 12. READING SHELF & AMAZON AFFILIATE HELPERS
+// ========================================================
+function toggleSaveShelf(bookId, btn) {
+  const index = readingShelf.findIndex(b => b.id === bookId);
+  const book = BOOKS_CATALOG.find(b => b.id === bookId);
+
+  if (index > -1) {
+    readingShelf.splice(index, 1);
+    if (btn) {
+      btn.classList.remove('saved');
+      btn.textContent = '🤍';
+    }
+  } else if (book) {
+    readingShelf.push(book);
+    if (btn) {
+      btn.classList.add('saved');
+      btn.textContent = '❤️';
+    }
   }
-  localStorage.setItem('carrie_saved_books', JSON.stringify(savedBookIds));
-  updateSavedBadge();
 
-  // Re-render current active views to update button states
-  if (!resultsSection.classList.contains('hidden')) {
-    containerUpdateBookmarkButtons(matchCardsGrid);
+  localStorage.setItem('carrie_reading_shelf', JSON.stringify(readingShelf));
+  updateShelfBadge();
+  renderShelfDrawer();
+}
+
+function updateShelfBadge() {
+  shelfBadge.textContent = readingShelf.length;
+}
+
+function renderShelfDrawer() {
+  if (readingShelf.length === 0) {
+    shelfItemsList.innerHTML = `<div class="empty-shelf">Your shelf is empty! Save books by clicking the heart button on any book card.</div>`;
+    return;
   }
-  if (!browseSection.classList.contains('hidden')) {
-    containerUpdateBookmarkButtons(browseCardsGrid);
-  }
-  if (!savedSection.classList.contains('hidden')) {
-    renderSavedBooks();
-  }
-}
 
-function containerUpdateBookmarkButtons(container) {
-  container.querySelectorAll('.bookmark-btn').forEach(btn => {
-    const isSaved = savedBookIds.includes(btn.dataset.id);
-    btn.classList.toggle('active', isSaved);
-    btn.innerHTML = `<span>${isSaved ? '❤️ Saved' : '🤍 Save'}</span>`;
-  });
-}
+  shelfItemsList.innerHTML = readingShelf.map(book => `
+    <div class="shelf-item-card">
+      <img src="https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg" alt="${book.title}" class="gutenberg-thumb" onerror="this.src='${book.coverFallback}'">
+      <div style="flex: 1;">
+        <h4 style="font-size: 1rem; margin-bottom: 0.2rem;">${book.title}</h4>
+        <span style="font-size: 0.8rem; color: var(--text-secondary);">${book.author}</span>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.6rem;">
+          <a href="${generateAmazonUrl(book)}" target="_blank" class="btn btn-primary btn-sm" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">🛒 Buy</a>
+          <button class="btn btn-outline btn-sm remove-shelf-btn" data-id="${book.id}" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">Remove</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
 
-function updateSavedBadge() {
-  savedCountBadge.textContent = savedBookIds.length;
-}
-
-// --- SEARCH & FILTER ---
-let activeGenre = 'all';
-
-function handleLibrarySearch() {
-  const query = librarySearchInput.value.toLowerCase().trim();
-  clearSearchBtn.classList.toggle('hidden', query.length === 0);
-  renderBrowseBooks(getFilteredBooks());
-}
-
-function filterBrowseByGenre(genre) {
-  activeGenre = genre;
-  renderBrowseBooks(getFilteredBooks());
-}
-
-function getFilteredBooks() {
-  const query = librarySearchInput.value.toLowerCase().trim();
-  return BOOKS_DATABASE.filter(book => {
-    const matchesGenre = (activeGenre === 'all') || (book.genre === activeGenre);
-    const matchesQuery = query === '' || 
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query) ||
-      book.synopsis.toLowerCase().includes(query) ||
-      book.vibes.some(v => v.toLowerCase().includes(query));
-    return matchesGenre && matchesQuery;
-  });
-}
-
-// --- UTILITIES & TOASTS ---
-function showToast(message) {
-  toastNotification.textContent = message;
-  toastNotification.classList.remove('hidden');
-  toastNotification.style.opacity = '1';
-  toastNotification.style.transform = 'translateY(0)';
-
-  setTimeout(() => {
-    toastNotification.style.opacity = '0';
-    toastNotification.style.transform = 'translateY(10px)';
-    setTimeout(() => toastNotification.classList.add('hidden'), 250);
-  }, 2600);
-}
-
-function shareResults() {
-  const url = window.location.href;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('PageMatch link copied to clipboard! 📋');
+  shelfItemsList.querySelectorAll('.remove-shelf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleSaveShelf(btn.dataset.id, null);
     });
-  } else {
-    showToast('Copy URL from your browser address bar.');
-  }
-}
-
-function triggerCelebration() {
-  confetti({
-    particleCount: 60,
-    spread: 60,
-    origin: { y: 0.6 }
   });
 }
 
-function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('carrie_theme', newTheme);
-  themeToggleBtn.querySelector('.theme-icon').textContent = newTheme === 'dark' ? '☀️' : '🌙';
+function generateAmazonUrl(book) {
+  const query = encodeURIComponent(`${book.title} ${book.author}`);
+  return `https://www.amazon.com/s?k=${query}&tag=${amazonTag}`;
 }
 
-function applyTheme() {
-  const savedTheme = localStorage.getItem('carrie_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  themeToggleBtn.querySelector('.theme-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+// Modal Listeners
+function setupModals() {
+  closeCapsuleBtn.addEventListener('click', () => capsuleModal.classList.add('hidden'));
+  capsuleModal.addEventListener('click', (e) => {
+    if (e.target === capsuleModal) capsuleModal.classList.add('hidden');
+  });
+
+  closeReaderBtn.addEventListener('click', () => readerModal.classList.add('hidden'));
+  readerModal.addEventListener('click', (e) => {
+    if (e.target === readerModal) readerModal.classList.add('hidden');
+  });
+
+  shelfDrawerBtn.addEventListener('click', () => {
+    renderShelfDrawer();
+    shelfDrawer.classList.remove('hidden');
+  });
+  closeShelfBtn.addEventListener('click', () => shelfDrawer.classList.add('hidden'));
+
+  affiliateConfigBtn.addEventListener('click', () => {
+    affiliateTagInput.value = amazonTag;
+    affiliateModal.classList.remove('hidden');
+  });
+  closeAffiliateBtn.addEventListener('click', () => affiliateModal.classList.add('hidden'));
+  saveAffiliateBtn.addEventListener('click', () => {
+    amazonTag = affiliateTagInput.value.trim() || 'carrie-20';
+    localStorage.setItem('carrie_amazon_tag', amazonTag);
+    affiliateModal.classList.add('hidden');
+    renderLibraryBooks(BOOKS_CATALOG);
+  });
 }
 
-// Start app
+// Start
 init();
